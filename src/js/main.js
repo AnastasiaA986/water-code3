@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Water } from "three/examples/jsm/objects/Water.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import islandUrl from "../Ressources/Island.glb"; // ← добавить
 
 // =====================
 // НАСТРОЙКИ
@@ -101,14 +103,38 @@ function updateSun(elevation, azimuth) {
 
 updateSun(SUN_ELEVATION, SUN_AZIMUTH);
 
-// =====================
-// РЕСАЙЗ
-// =====================
-window.addEventListener("resize", () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
+const loader = new GLTFLoader();
+
+loader.load(
+  islandUrl,
+  (gltf) => {
+    console.log("✅ Модель загружена!", gltf);
+
+    const model = gltf.scene;
+
+    // Автомасштаб
+    const box = new THREE.Box3().setFromObject(model);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+
+    console.log("Размер:", size);
+
+    model.scale.setScalar(50 / maxDim); // подгоняем до 50 единиц
+    model.position.sub(center); // центрируем
+    model.position.y = -2; // на уровне воды
+
+    scene.add(model);
+  },
+  (xhr) => {
+    if (xhr.total > 0) {
+      console.log(((xhr.loaded / xhr.total) * 100).toFixed(1) + "% загружено");
+    }
+  },
+  (error) => {
+    console.error("❌ Ошибка:", error);
+  },
+);
 
 // =====================
 // АНИМАЦИЯ
