@@ -12,6 +12,7 @@ import model3D4Url from "../Ressources/modele_3d_04.glb";
 import model3D5Url from "../Ressources/modele_3d_05.glb";
 import model3D6Url from "../Ressources/modele_3d_06.glb";
 import model3D7Url from "../Ressources/modele_3d_07.glb";
+import model3D8Url from "../Ressources/modele_3d_08.glb";
 
 // =====================
 // НАСТРОЙКИ
@@ -370,7 +371,7 @@ loader.load(island1Url, (gltf) => {
     obj2.position.sub(c);
     obj2.position.x = -200; // седьмой остров x=-200
     obj2.position.z = -1800; // седьмой остров z=-1800
-    obj2.position.y = 15;
+    obj2.position.y = -7;
 
     obj2.traverse((child) => {
       if (child.isMesh) {
@@ -381,6 +382,34 @@ loader.load(island1Url, (gltf) => {
 
     scene.add(obj2);
     console.log("✅ modele_3D_07 загружен!");
+  });
+
+  // =====================
+  // модель на 8 остров (x=-200, z=-1720)
+  // =====================
+  loader.load(model3D8Url, (gltf3) => {
+    const obj2 = gltf3.scene;
+
+    const b = new THREE.Box3().setFromObject(obj2);
+    const c = b.getCenter(new THREE.Vector3());
+    const s = b.getSize(new THREE.Vector3());
+
+    obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
+    obj2.rotation.y = -Math.PI / 2;
+    obj2.position.sub(c);
+    obj2.position.x = 150; // восьмой остров x=150
+    obj2.position.z = -2100; // восьмой остров z=-2100
+    obj2.position.y = 9.5;
+
+    obj2.traverse((child) => {
+      if (child.isMesh) {
+        child.material.envMapIntensity = 0.2;
+        child.material.needsUpdate = true;
+      }
+    });
+
+    scene.add(obj2);
+    console.log("✅ modele_3D_08 загружен!");
   });
 });
 
