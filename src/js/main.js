@@ -7,6 +7,11 @@ import island1Url from "../Ressources/Island.glb";
 import island2Url from "../Ressources/Island2.glb";
 import model3DUrl from "../Ressources/modele_3d_01.glb";
 import model3D2Url from "../Ressources/modele_3d_02.glb";
+import model3D3Url from "../Ressources/modele_3d_03.glb";
+import model3D4Url from "../Ressources/modele_3d_04.glb";
+import model3D5Url from "../Ressources/modele_3d_05.glb";
+import model3D6Url from "../Ressources/modele_3d_06.glb";
+import model3D7Url from "../Ressources/modele_3d_07.glb";
 
 // =====================
 // НАСТРОЙКИ
@@ -237,6 +242,146 @@ loader.load(island1Url, (gltf) => {
     scene.add(obj2);
     console.log("✅ modele_3D_02 загружен!");
   });
+
+  // =====================
+  // модель на 3 остров (x=-180, z=-600)
+  // =====================
+  loader.load(model3D3Url, (gltf3) => {
+    const obj2 = gltf3.scene;
+
+    const b = new THREE.Box3().setFromObject(obj2);
+    const c = b.getCenter(new THREE.Vector3());
+    const s = b.getSize(new THREE.Vector3());
+
+    obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
+    obj2.rotation.y = -Math.PI / 2;
+    obj2.position.sub(c);
+    obj2.position.x = -181; // третий остров x=-180
+    obj2.position.z = -600; // третий остров z=-600
+    obj2.position.y = 10;
+
+    obj2.traverse((child) => {
+      if (child.isMesh) {
+        child.material.envMapIntensity = 0.2;
+        child.material.needsUpdate = true;
+      }
+    });
+
+    scene.add(obj2);
+    console.log("✅ modele_3D_03 загружен!");
+  });
+
+  // =====================
+  // модель на 4 остров (x=80, z=-900)
+  // =====================
+  loader.load(model3D4Url, (gltf3) => {
+    const obj2 = gltf3.scene;
+
+    const b = new THREE.Box3().setFromObject(obj2);
+    const c = b.getCenter(new THREE.Vector3());
+    const s = b.getSize(new THREE.Vector3());
+
+    obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
+    obj2.rotation.y = -Math.PI / 2;
+    obj2.position.sub(c);
+    obj2.position.x = 79; // четвёртый остров x=80
+    obj2.position.z = -900; // четвёртый остров z=-900
+    obj2.position.y = 10;
+
+    obj2.traverse((child) => {
+      if (child.isMesh) {
+        child.material.envMapIntensity = 0.2;
+        child.material.needsUpdate = true;
+      }
+    });
+
+    scene.add(obj2);
+    console.log("✅ modele_3D_04 загружен!");
+  });
+
+  // =====================
+  // модель на 5 остров (x=-120, z=-1200)
+  // =====================
+  loader.load(model3D5Url, (gltf3) => {
+    const obj2 = gltf3.scene;
+
+    const b = new THREE.Box3().setFromObject(obj2);
+    const c = b.getCenter(new THREE.Vector3());
+    const s = b.getSize(new THREE.Vector3());
+
+    obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
+    obj2.rotation.y = -Math.PI / 2;
+    obj2.position.sub(c);
+    obj2.position.x = -120; // пятый остров x=-120
+    obj2.position.z = -1200; // пятый остров z=-1200
+    obj2.position.y = 15;
+
+    obj2.traverse((child) => {
+      if (child.isMesh) {
+        child.material.envMapIntensity = 0.2;
+        child.material.needsUpdate = true;
+      }
+    });
+
+    scene.add(obj2);
+    console.log("✅ modele_3D_05 загружен!");
+  });
+
+  // =====================
+  // модель на 6 остров (x=200, z=-1500)
+  // =====================
+  loader.load(model3D6Url, (gltf3) => {
+    const obj2 = gltf3.scene;
+
+    const b = new THREE.Box3().setFromObject(obj2);
+    const c = b.getCenter(new THREE.Vector3());
+    const s = b.getSize(new THREE.Vector3());
+
+    obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
+    obj2.rotation.y = -Math.PI / 2;
+    obj2.position.sub(c);
+    obj2.position.x = 197; // шестой остров x=200
+    obj2.position.z = -1500; // шестой остров z=-1500
+    obj2.position.y = 9;
+
+    obj2.traverse((child) => {
+      if (child.isMesh) {
+        child.material.envMapIntensity = 0.2;
+        child.material.needsUpdate = true;
+      }
+    });
+
+    scene.add(obj2);
+    console.log("✅ modele_3D_06 загружен!");
+  });
+
+  // =====================
+  // модель на 7 остров (x=-200, z=-1720)
+  // =====================
+  loader.load(model3D7Url, (gltf3) => {
+    const obj2 = gltf3.scene;
+
+    const b = new THREE.Box3().setFromObject(obj2);
+    const c = b.getCenter(new THREE.Vector3());
+    const s = b.getSize(new THREE.Vector3());
+
+    obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
+    obj2.rotation.y = -Math.PI / 2;
+    obj2.position.sub(c);
+    obj2.position.x = -200; // седьмой остров x=-200
+    obj2.position.z = -1800; // седьмой остров z=-1800
+    obj2.position.y = 15;
+
+    obj2.traverse((child) => {
+      if (child.isMesh) {
+        child.material.envMapIntensity = 0.2;
+        child.material.needsUpdate = true;
+      }
+    });
+
+    scene.add(obj2);
+    console.log("✅ modele_3D_07 загружен!");
+  });
 });
 
 // const spotLightHelper = new THREE.SpotLightHelper(spotLight);
@@ -347,6 +492,32 @@ function animate() {
 
   camera.position.copy(pos);
   camera.lookAt(finalLookAt);
+
+  // обновляем активное меню в зависимости от прогресса
+  let activeIndex;
+  if (scrollProgress < 4)
+    activeIndex = 0; // Accueil для первых 4 островов
+  else if (scrollProgress < 6)
+    activeIndex = 1; // Collection для следующих 2
+  else if (scrollProgress < 7)
+    activeIndex = 2; // Iris для следующих 1
+  else activeIndex = 3; // Oceanix для последнего
+
+  // снимаем active со всех
+  const menuItems = [
+    "menu-accueil",
+    "menu-collection",
+    "menu-iris",
+    "menu-oceanix",
+  ];
+  menuItems.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove("active");
+  });
+
+  // добавляем active к текущему
+  const activeEl = document.getElementById(menuItems[activeIndex]);
+  if (activeEl) activeEl.classList.add("active");
 
   renderer.render(scene, camera);
 }

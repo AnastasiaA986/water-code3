@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Albert Sans", Arial, sans-serif;
+  overflow: hidden; /* убираем скролл */
+}
+
+#sideMenu {
+  position: fixed;
+  left: 60px; /* справа */
+  top: 50%;
+  transform: translateY(-50%); /* центрируем вертикально */
+  display: flex;
+  flex-direction: column; /* в колонку */
+  gap: 20px; /* расстояние между элементами */
+  z-index: 1000; /* поверх всего */
+}
+
+.label {
+  color: #fff;
+  font-variant-numeric: stacked-fractions ordinal slashed-zero;
+
+  font-family: "Albert Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.label:hover {
+  color: rgba(255, 255, 255, 0.2);
+}
