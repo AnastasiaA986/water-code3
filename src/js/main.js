@@ -5,6 +5,8 @@ import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import island1Url from "../Ressources/Island.glb";
 import island2Url from "../Ressources/Island2.glb";
+import model3DUrl from "../Ressources/modele_3d_01.glb";
+import model3D2Url from "../Ressources/modele_3d_02.glb";
 
 // =====================
 // НАСТРОЙКИ
@@ -12,7 +14,7 @@ import island2Url from "../Ressources/Island2.glb";
 const WAVE_SPEED = 0.5 / 100.0; // скорость волн
 const DISTORTION = 1.2; // сила искажения поверхности
 const WATER_COLOR = 0x72b4ce; // цвет глубины воды
-const SUN_ELEVATION = 155; // высота солнца в градусах (2 = закат, 45 = полдень)
+const SUN_ELEVATION = 160; // высота солнца в градусах (2 = закат, 45 = полдень)
 const SUN_AZIMUTH = 200; // направление солнца (0-360)
 
 // =====================
@@ -34,12 +36,12 @@ document.body.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
-  55,
+  45,
   window.innerWidth / window.innerHeight,
   1,
   20000,
 );
-camera.position.set(30, 30, 100);
+camera.position.set(0, 30, 100);
 
 // =====================
 // УПРАВЛЕНИЕ
@@ -72,6 +74,7 @@ const water = new Water(waterGeometry, {
 });
 
 water.rotation.x = -Math.PI / 2;
+water.position.y = -15; // ← добавь эту строку (отрицательное = ниже)
 scene.add(water);
 
 // СВЕТ
@@ -126,83 +129,225 @@ updateSun(SUN_ELEVATION, SUN_AZIMUTH);
 
 const loader = new GLTFLoader();
 
-loader.load(
-  island1Url,
-  (gltf) => {
-    console.log("✅ Модель загружена!", gltf);
+// =====================
+// ОСТРОВА + СВЕТ
+// =====================
+loader.load(island1Url, (gltf) => {
+  function createIsland(x, z) {
+    const clone = gltf.scene.clone(true);
 
-    const model = gltf.scene;
-    const box = new THREE.Box3().setFromObject(model);
+    const box = new THREE.Box3().setFromObject(clone);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z);
 
-    console.log("Размер:", size);
+    clone.scale.setScalar(50 / maxDim);
+    clone.position.sub(center);
+    clone.position.x = x;
+    clone.position.z = z;
+    clone.position.y = -14;
+    clone.rotation.y = -Math.PI / 5.8; // ← 30 градусов
 
-    model.scale.setScalar(50 / maxDim); // подгоняем до 50 единиц
-    model.position.sub(center); // центрируем
-    model.position.y = 0.2; // на уровне воды
-
-    scene.add(model);
-
-    model.traverse((child) => {
+    clone.traverse((child) => {
       if (child.isMesh) {
-        child.material.envMapIntensity = 0.2; // ← ослабляет HDR освещение
+        child.material = child.material.clone();
+        child.material.envMapIntensity = 0.2;
         child.material.needsUpdate = true;
       }
     });
-    // прожектор автоматически следит за островом
-    mainLight.target = model;
-  },
-  (xhr) => {
-    if (xhr.total > 0) {
-      console.log(((xhr.loaded / xhr.total) * 100).toFixed(1) + "% загружено");
-    }
-  },
-  (error) => {
-    console.error("❌ Ошибка:", error);
-  },
-);
 
-loader.load(island2Url, (gltf) => {
-  console.log("✅ Второй остров загружен!", gltf);
+    scene.add(clone);
 
-  const model2 = gltf.scene;
+    // 💡 свой свет над каждым островом
+    const light = new THREE.SpotLight(0xff2700, 80); // ← ИНТЕНСИВНОСТЬ СВЕТА (меньше = слабее)
+    light.position.set(x, 80, z);
+    light.target.position.set(x, 0, z);
+    light.angle = Math.PI / 5;
+    light.penumbra = 1;
+    light.decay = 2;
+    light.castShadow = true;
 
-  // Автомасштаб
-  const box2 = new THREE.Box3().setFromObject(model2);
-  const size2 = box2.getSize(new THREE.Vector3());
-  const center2 = box2.getCenter(new THREE.Vector3());
-  const maxDim2 = Math.max(size2.x, size2.y, size2.z);
+    scene.add(light);
+    scene.add(light.target);
+  }
 
-  model2.scale.setScalar(50 / maxDim2);
-  model2.position.sub(center2);
+  // расставляем острова
 
-  // 👉 СМЕЩАЕМ второй остров вправо
-  model2.position.x = 80; // ← расстояние между островами
-  model2.position.y = 0.2;
+  createIsland(0, 0); // первый (центр)
+  createIsland(120, -350); // второй
+  createIsland(-180, -600); // третий
+  createIsland(80, -900); // четвёртый
+  createIsland(-120, -1200); // пятый
+  createIsland(200, -1500); // шестой
+  createIsland(-200, -1800); // седьмой
+  createIsland(150, -2100); // восьмой
 
-  // Тени
-  model2.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-      child.material.envMapIntensity = 0.2;
-      child.material.needsUpdate = true;
-    }
+  // =====================
+  // модель на первый остров (x=0, z=0)
+  // =====================
+  loader.load(model3DUrl, (gltf2) => {
+    const obj = gltf2.scene;
+
+    const b = new THREE.Box3().setFromObject(obj);
+    const c = b.getCenter(new THREE.Vector3());
+    const s = b.getSize(new THREE.Vector3());
+
+    obj.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
+    obj.rotation.y = -Math.PI / 2;
+    obj.position.sub(c);
+    obj.position.x = -4; // первый остров x=0, смещение -3
+    obj.position.z = 0;
+    obj.position.y = 9.5;
+
+    obj.traverse((child) => {
+      if (child.isMesh) {
+        child.material.envMapIntensity = 0.2;
+        child.material.needsUpdate = true;
+      }
+    });
+
+    scene.add(obj);
+    console.log("✅ modele_3D_01 загружен!");
   });
 
-  scene.add(model2);
+  // =====================
+  // модель на второй остров (x=120, z=-350)
+  // =====================
+  loader.load(model3D2Url, (gltf3) => {
+    const obj2 = gltf3.scene;
+
+    const b = new THREE.Box3().setFromObject(obj2);
+    const c = b.getCenter(new THREE.Vector3());
+    const s = b.getSize(new THREE.Vector3());
+
+    obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
+    obj2.rotation.y = -Math.PI / 2;
+    obj2.position.sub(c);
+    obj2.position.x = 120; // второй остров x=120
+    obj2.position.z = -350; // второй остров z=-350
+    obj2.position.y = 15.5;
+
+    obj2.traverse((child) => {
+      if (child.isMesh) {
+        child.material.envMapIntensity = 0.2;
+        child.material.needsUpdate = true;
+      }
+    });
+
+    scene.add(obj2);
+    console.log("✅ modele_3D_02 загружен!");
+  });
 });
 
 // const spotLightHelper = new THREE.SpotLightHelper(spotLight);
 // scene.add(spotLightHelper);
+// =====================
+// НАВИГАЦИЯ ПО ОСТРОВАМ
+// =====================
+const islandPositions = [
+  { x: 0, y: 0, z: 120, lookAt: new THREE.Vector3(0, 0, 0) },
+  { x: 0, y: 5, z: 80, lookAt: new THREE.Vector3(0, 0, 0) },
+  { x: 120, y: 15, z: -270, lookAt: new THREE.Vector3(120, 0, -350) },
+  { x: -180, y: 5, z: -520, lookAt: new THREE.Vector3(-180, 0, -600) },
+  { x: 80, y: 10, z: -820, lookAt: new THREE.Vector3(80, 0, -900) },
+  { x: -120, y: 5, z: -1120, lookAt: new THREE.Vector3(-120, 0, -1200) },
+  { x: 200, y: 10, z: -1420, lookAt: new THREE.Vector3(200, 0, -1500) },
+  { x: -200, y: 15, z: -1720, lookAt: new THREE.Vector3(-200, 0, -1800) },
+  { x: 150, y: 5, z: -2020, lookAt: new THREE.Vector3(150, 0, -2100) },
+];
+
+let scrollProgress = 0;
+let targetProgress = 0;
+
+// =====================
+// ПОВОРОТ МЫШЬЮ ±5°
+// =====================
+const TILT_LIMIT = THREE.MathUtils.degToRad(1); // ← УМЕНЬШИ ЧИСЛО ДЛЯ МЕНЬШЕГО НАКЛОНА
+const mouse = { x: 0, y: 0 }; // -1 до +1
+
+window.addEventListener("mousemove", (e) => {
+  // нормализуем позицию мыши от -1 до +1
+  mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
+  mouse.y = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+// скролл
+window.addEventListener("wheel", (e) => {
+  targetProgress += e.deltaY * 0.002; // ← СКОРОСТЬ СКРОЛЛА (меньше = медленнее)
+  targetProgress = Math.max(
+    0,
+    Math.min(islandPositions.length - 1, targetProgress),
+  );
+});
+
+function getCameraState(progress) {
+  const indexA = Math.floor(progress);
+  const indexB = Math.min(indexA + 1, islandPositions.length - 1);
+  let t = progress - indexA;
+
+  // замедление при приближении (ease-out quartic) ← ИЗМЕНИ СТЕПЕНЬ ДЛЯ СИЛЫ ЗАМЕДЛЕНИЯ (4 = quartic, сильнее чем cubic)
+  t = 1 - Math.pow(1 - t, 4);
+
+  const a = islandPositions[indexA];
+  const b = islandPositions[indexB];
+
+  const pos = new THREE.Vector3(
+    a.x + (b.x - a.x) * t,
+    a.y + (b.y - a.y) * t,
+    a.z + (b.z - a.z) * t,
+  );
+
+  const look = new THREE.Vector3(
+    a.lookAt.x + (b.lookAt.x - a.lookAt.x) * t,
+    a.lookAt.y + (b.lookAt.y - a.lookAt.y) * t,
+    a.lookAt.z + (b.lookAt.z - a.lookAt.z) * t,
+  );
+
+  return { pos, look };
+}
+
+// resize
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
 // =====================
 // АНИМАЦИЯ
 // =====================
 function animate() {
   requestAnimationFrame(animate);
   water.material.uniforms["time"].value += WAVE_SPEED;
+
+  // плавно догоняем скролл ← ИЗМЕНИ КОЭФФИЦИЕНТ ДЛЯ СКОРОСТИ СГЛАЖИВАНИЯ (меньше = медленнее)
+  scrollProgress += (targetProgress - scrollProgress) * 0.05;
+
+  // базовая позиция и lookAt по маршруту
+  const { pos, look } = getCameraState(scrollProgress);
+
+  // применяем смещение от мыши (±10°)
+  const offsetX = mouse.x * TILT_LIMIT; // горизонталь
+  const offsetY = mouse.y * TILT_LIMIT; // вертикаль
+
+  // направление взгляда
+  const direction = new THREE.Vector3().subVectors(look, pos).normalize();
+
+  // поворачиваем направление на угол мыши
+  const quaternion = new THREE.Quaternion();
+  const up = new THREE.Vector3(0, 1, 0);
+  const right = new THREE.Vector3().crossVectors(direction, up).normalize();
+
+  const qH = new THREE.Quaternion().setFromAxisAngle(up, -offsetX);
+  const qV = new THREE.Quaternion().setFromAxisAngle(right, offsetY);
+  quaternion.multiplyQuaternions(qH, qV);
+
+  const finalLook = direction.clone().applyQuaternion(quaternion);
+  const finalLookAt = pos.clone().add(finalLook);
+
+  camera.position.copy(pos);
+  camera.lookAt(finalLookAt);
+
   renderer.render(scene, camera);
 }
 
