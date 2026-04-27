@@ -30,3 +30,85 @@ body {
 .label:hover {
   color: rgba(255, 255, 255, 0.2);
 }
+
+/* ── Button container ── */
+.ripple-btn {
+  position: fixed;
+  top: 200px;
+  left: 200px;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Ripple rings ── */
+.ripple-ring {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  animation: ripple-out 3s ease-out infinite;
+  pointer-events: none;
+}
+
+.ripple-ring:nth-child(1) {
+  animation-delay: 0s;
+}
+.ripple-ring:nth-child(2) {
+  animation-delay: 0.75s;
+}
+.ripple-ring:nth-child(3) {
+  animation-delay: 1.5s;
+}
+.ripple-ring:nth-child(4) {
+  animation-delay: 2.25s;
+}
+
+@keyframes ripple-out {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.1);
+    opacity: 0;
+  }
+}
+
+/* ── Star icon ── */
+.star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.star img {
+  width: 28px;
+  height: 28px;
+}
+
+/* ── Hover / Active ── */
+.ripple-btn:hover .star img {
+  opacity: 0.85;
+}
+
+.ripple-btn:active .star {
+  transform: translate(-50%, -50%) scale(0.95);
+}
