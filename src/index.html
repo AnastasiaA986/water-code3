@@ -1,10 +1,12 @@
 <!doctype html>
-<html>
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title>eikon parcel starter</title>
+    <title>3D Islands Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="stylesheet" href="/src/css/main.css" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,7 +14,11 @@
       rel="stylesheet"
     />
   </head>
+
   <body>
+    <!-- ===================== -->
+    <!-- SIDE MENU -->
+    <!-- ===================== -->
     <div id="sideMenu">
       <span id="menu-accueil" class="label active">Accueil</span>
       <span id="menu-collection" class="label">Collection</span>
@@ -20,24 +26,37 @@
       <span id="menu-oceanix" class="label">Oceanix</span>
     </div>
 
-    <button class="ripple-btn">
-      <div class="ripple-ring"></div>
-      <div class="ripple-ring"></div>
-      <div class="ripple-ring"></div>
-      <div class="ripple-ring"></div>
-      <div class="star">
-        <img src="../src/Ressources/star-bouton.svg" alt="button-star" />
-      </div>
-    </button>
+    <!-- ===================== -->
+    <!-- CONTAINER FOR INFO BUTTONS (JS inserts them here) -->
+    <!-- ===================== -->
+    <div id="info-buttons"></div>
 
+    <!-- ===================== -->
+    <!-- OVERLAY -->
+    <!-- ===================== -->
+    <div id="info-overlay">
+      <div id="overlay-content">
+        <h2 id="overlay-title"></h2>
+        <p id="overlay-text"></p>
+        <button id="overlay-close">Fermer</button>
+      </div>
+    </div>
+
+    <!-- ===================== -->
+    <!-- IMPORTMAP -->
+    <!-- ===================== -->
     <script type="importmap">
       {
         "imports": {
           "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.157.0/examples/jsm/"
+          "three/examples/jsm/": "https://unpkg.com/three@0.157.0/examples/jsm/"
         }
       }
     </script>
+
+    <!-- ===================== -->
+    <!-- MAIN JS -->
+    <!-- ===================== -->
     <script type="module" src="./js/main.js"></script>
   </body>
 </html>

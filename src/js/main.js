@@ -12,6 +12,154 @@ import model3D5Url from "../Ressources/modele_3d_04.glb";
 import model3D6Url from "../Ressources/modele_3d_07.glb";
 import model3D7Url from "../Ressources/modele_3d_06.glb";
 import model3D8Url from "../Ressources/modele_3d_02.glb";
+import starBtnUrl from "../Ressources/star-bouton.svg";
+
+// =====================
+// DONNÉES BOUTONS INFO
+// Ajuste les anchor (coordonnées monde) et les textes selon tes modèles.
+// visibleMin/Max = plage de scrollProgress où le bouton est affiché.
+// =====================
+const MODELS_DATA = [
+  {
+    visibleMin: 0,
+    visibleMax: 1.5,
+    buttons: [
+      {
+        //  augmente/baisse le 2e chiffre (Y) pour monter/descendre le bouton sur le personnage. Les titres et textes sont tous marqués "Remplace ce texte..." pour que tu remplisses le vrai contenu.
+        anchor: new THREE.Vector3(-1, 26, 4),
+        title: "Personnage 1 – Info A",
+        text: "Remplace ce texte par l'information que tu veux afficher pour le premier personnage.",
+      },
+      {
+        anchor: new THREE.Vector3(4, 16, 2),
+        title: "Personnage 1 – Info B",
+        text: "Deuxième information pour le premier personnage.",
+      },
+    ],
+  },
+  {
+    visibleMin: 1.5,
+    visibleMax: 2.5,
+    buttons: [
+      {
+        anchor: new THREE.Vector3(120, 24, -346),
+        title: "Personnage 2 – Info A",
+        text: "Information pour le deuxième personnage.",
+      },
+    ],
+  },
+  {
+    visibleMin: 2.5,
+    visibleMax: 3.5,
+    buttons: [
+      {
+        anchor: new THREE.Vector3(-183, 25, -596),
+        title: "Personnage 3 – Info A",
+        text: "Information pour le troisième personnage.",
+      },
+      {
+        anchor: new THREE.Vector3(-178, 15, -598),
+        title: "Personnage 3 – Info B",
+        text: "Deuxième information pour le troisième personnage.",
+      },
+    ],
+  },
+  {
+    visibleMin: 3.5,
+    visibleMax: 4.5,
+    buttons: [
+      {
+        anchor: new THREE.Vector3(80, 30, -896),
+        title: "Personnage 4 – Info A",
+        text: "Information pour le quatrième personnage.",
+      },
+    ],
+  },
+  {
+    visibleMin: 4.5,
+    visibleMax: 5.5,
+    buttons: [
+      {
+        anchor: new THREE.Vector3(-121, 25, -1191),
+        title: "Personnage 5 – Info A",
+        text: "Information pour le cinquième personnage.",
+      },
+    ],
+  },
+  {
+    visibleMin: 5.5,
+    visibleMax: 6.5,
+    buttons: [
+      {
+        anchor: new THREE.Vector3(200, 8, -1496),
+        title: "Personnage 6 – Info A",
+        text: "Information pour le sixième personnage.",
+      },
+    ],
+  },
+  {
+    visibleMin: 6.5,
+    visibleMax: 7.5,
+    buttons: [
+      {
+        anchor: new THREE.Vector3(-203, 24, -1796),
+        title: "Personnage 7 – Info A",
+        text: "Information pour le septième personnage.",
+      },
+    ],
+  },
+  {
+    visibleMin: 7.5,
+    visibleMax: 9.0,
+    buttons: [
+      {
+        anchor: new THREE.Vector3(150, 30, -2096),
+        title: "Personnage 8 – Info A",
+        text: "Information pour le huitième personnage.",
+      },
+    ],
+  },
+];
+
+// =====================
+// CRÉATION DES BOUTONS DOM
+// =====================
+const buttonsContainer = document.getElementById("info-buttons");
+
+MODELS_DATA.forEach((model) => {
+  model.buttons.forEach((btn) => {
+    const el = document.createElement("button");
+    el.className = "ripple-btn";
+    el.innerHTML = `
+      <div class="ripple-ring"></div>
+      <div class="ripple-ring"></div>
+      <div class="ripple-ring"></div>
+      <div class="ripple-ring"></div>
+      <div class="star"><img src="${starBtnUrl}" alt="" /></div>
+    `;
+    el.style.opacity = "0";
+    el.style.pointerEvents = "none";
+    el.addEventListener("click", () => showOverlay(btn.title, btn.text));
+    buttonsContainer.appendChild(el);
+    btn.element = el;
+  });
+});
+
+// =====================
+// OVERLAY
+// =====================
+const overlay = document.getElementById("info-overlay");
+const overlayTitle = document.getElementById("overlay-title");
+const overlayText = document.getElementById("overlay-text");
+document.getElementById("overlay-close").addEventListener("click", () => {
+  overlay.classList.remove("visible");
+});
+
+function showOverlay(title, text) {
+  overlayTitle.textContent = title;
+  overlayText.textContent = text;
+  overlay.classList.add("visible");
+}
 
 // =====================
 // НАСТРОЙКИ
@@ -546,6 +694,27 @@ function animate() {
   // добавляем active к текущему
   const activeEl = document.getElementById(menuItems[activeIndex]);
   if (activeEl) activeEl.classList.add("active");
+
+  // ── Mise à jour des boutons info (projection 3D → écran) ──
+  const screenVec = new THREE.Vector3();
+  MODELS_DATA.forEach((model) => {
+    const center = (model.visibleMin + model.visibleMax) / 2;
+    const halfRange = (model.visibleMax - model.visibleMin) / 2;
+    const dist = Math.abs(scrollProgress - center);
+    const opacity = Math.max(0, 1 - dist / halfRange);
+
+    model.buttons.forEach((btn) => {
+      if (!btn.element) return;
+      screenVec.copy(btn.anchor).project(camera);
+      const x = (screenVec.x * 0.5 + 0.5) * window.innerWidth;
+      const y = (-screenVec.y * 0.5 + 0.5) * window.innerHeight;
+      btn.element.style.left = x + "px";
+      btn.element.style.top = y + "px";
+      btn.element.style.opacity = screenVec.z < 1 ? opacity : 0;
+      btn.element.style.pointerEvents =
+        opacity > 0.3 && screenVec.z < 1 ? "auto" : "none";
+    });
+  });
 
   renderer.render(scene, camera);
 }
