@@ -4,15 +4,14 @@ import { Water } from "three/examples/jsm/objects/Water.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import island1Url from "../Ressources/Island.glb";
-import island2Url from "../Ressources/Island2.glb";
-import model3DUrl from "../Ressources/modele_3d_01.glb";
-import model3D2Url from "../Ressources/modele_3d_02.glb";
-import model3D3Url from "../Ressources/modele_3d_03.glb";
-import model3D4Url from "../Ressources/modele_3d_04.glb";
-import model3D5Url from "../Ressources/modele_3d_05.glb";
-import model3D6Url from "../Ressources/modele_3d_06.glb";
-import model3D7Url from "../Ressources/modele_3d_07.glb";
-import model3D8Url from "../Ressources/modele_3d_08.glb";
+import model3DUrl from "../Ressources/modele_3D_03.glb";
+import model3D2Url from "../Ressources/modele_3d_08.glb";
+import model3D3Url from "../Ressources/modele_3d_01.glb";
+import model3D4Url from "../Ressources/modele_3d_05.glb";
+import model3D5Url from "../Ressources/modele_3d_04.glb";
+import model3D6Url from "../Ressources/modele_3d_07.glb";
+import model3D7Url from "../Ressources/modele_3d_06.glb";
+import model3D8Url from "../Ressources/modele_3d_02.glb";
 
 // =====================
 // НАСТРОЙКИ
@@ -201,7 +200,7 @@ loader.load(island1Url, (gltf) => {
     obj.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
     obj.rotation.y = -Math.PI / 2;
     obj.position.sub(c);
-    obj.position.x = -4; // первый остров x=0, смещение -3
+    obj.position.x = -1; // первый остров x=0, смещение -3
     obj.position.z = 0;
     obj.position.y = 9.5;
 
@@ -231,7 +230,7 @@ loader.load(island1Url, (gltf) => {
     obj2.position.sub(c);
     obj2.position.x = 120; // второй остров x=120
     obj2.position.z = -350; // второй остров z=-350
-    obj2.position.y = 15.5;
+    obj2.position.y = 9;
 
     obj2.traverse((child) => {
       if (child.isMesh) {
@@ -257,7 +256,7 @@ loader.load(island1Url, (gltf) => {
     obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
     obj2.rotation.y = -Math.PI / 2;
     obj2.position.sub(c);
-    obj2.position.x = -181; // третий остров x=-180
+    obj2.position.x = -183; // третий остров x=-180
     obj2.position.z = -600; // третий остров z=-600
     obj2.position.y = 10;
 
@@ -285,9 +284,9 @@ loader.load(island1Url, (gltf) => {
     obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
     obj2.rotation.y = -Math.PI / 2;
     obj2.position.sub(c);
-    obj2.position.x = 79; // четвёртый остров x=80
+    obj2.position.x = 80.5; // четвёртый остров x=80
     obj2.position.z = -900; // четвёртый остров z=-900
-    obj2.position.y = 10;
+    obj2.position.y = 15;
 
     obj2.traverse((child) => {
       if (child.isMesh) {
@@ -313,9 +312,9 @@ loader.load(island1Url, (gltf) => {
     obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
     obj2.rotation.y = -Math.PI / 2;
     obj2.position.sub(c);
-    obj2.position.x = -120; // пятый остров x=-120
-    obj2.position.z = -1200; // пятый остров z=-1200
-    obj2.position.y = 15;
+    obj2.position.x = -121.5; // пятый остров x=-120
+    obj2.position.z = -1195; // пятый остров z=-1200
+    obj2.position.y = 10;
 
     obj2.traverse((child) => {
       if (child.isMesh) {
@@ -341,9 +340,9 @@ loader.load(island1Url, (gltf) => {
     obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
     obj2.rotation.y = -Math.PI / 2;
     obj2.position.sub(c);
-    obj2.position.x = 197; // шестой остров x=200
+    obj2.position.x = 200; // шестой остров x=200
     obj2.position.z = -1500; // шестой остров z=-1500
-    obj2.position.y = 9;
+    obj2.position.y = -7;
 
     obj2.traverse((child) => {
       if (child.isMesh) {
@@ -369,9 +368,9 @@ loader.load(island1Url, (gltf) => {
     obj2.scale.setScalar(33 / Math.max(s.x, s.y, s.z));
     obj2.rotation.y = -Math.PI / 2;
     obj2.position.sub(c);
-    obj2.position.x = -200; // седьмой остров x=-200
+    obj2.position.x = -203; // седьмой остров x=-200
     obj2.position.z = -1800; // седьмой остров z=-1800
-    obj2.position.y = -7;
+    obj2.position.y = 9;
 
     obj2.traverse((child) => {
       if (child.isMesh) {
@@ -399,7 +398,7 @@ loader.load(island1Url, (gltf) => {
     obj2.position.sub(c);
     obj2.position.x = 150; // восьмой остров x=150
     obj2.position.z = -2100; // восьмой остров z=-2100
-    obj2.position.y = 9.5;
+    obj2.position.y = 15.5;
 
     obj2.traverse((child) => {
       if (child.isMesh) {
