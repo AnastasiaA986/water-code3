@@ -1,8 +1,140 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Albert Sans", Arial, sans-serif;
-  overflow: hidden; /* убираем скролл */
+  font-family: "manifold-cf", Arial, sans-serif;
+
+  overflow-y: auto; /* разрешаем вертикальный скролл */
+  overflow-x: hidden;
+  background: transparent;
+}
+
+/* ── 3D Canvas Background (fixed, behind everything) ── */
+#canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#canvas-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Scroll Tracker (invisible, creates scrollable height) ── */
+#scroll-tracker {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 1400vh; /* достаточно для прокрутки через все 12 позиций */
+  pointer-events: none;
+}
+
+/* ── Page sections ── */
+.page-section {
+  width: 100%;
+  position: relative;
+}
+
+/* ── Artiste section (appears after scroll) ── */
+#artiste-section {
+  position: relative;
+  z-index: 15;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 60px 40px;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+#artiste-section.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.artiste-content {
+  max-width: 800px;
+  margin: 0 auto;
+  color: #fff;
+}
+
+h2 {
+  color: #2c5c72;
+  text-align: center;
+  font-variant-numeric: stacked-fractions ordinal slashed-zero;
+  font-feature-settings:
+    "sinf" on,
+    "dnom" on,
+    "numr" on,
+    "salt" on,
+    "ss01" on,
+    "ss02" on,
+    "ss03" on,
+    "ss05" on,
+    "ss06" on,
+    "ss07" on,
+    "ss09" on,
+    "ss10" on;
+  font-family: "CoFo Raffine";
+  font-size: 90px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 43.2px;
+  text-transform: uppercase;
+}
+
+h3 {
+  color: #2c5c72;
+  font-variant-numeric: stacked-fractions ordinal slashed-zero;
+  font-feature-settings:
+    "sinf" on,
+    "dnom" on,
+    "numr" on,
+    "dlig" on,
+    "salt" on,
+    "ss01" on,
+    "ss02" on,
+    "ss03" on,
+    "ss05" on,
+    "ss06" on,
+    "ss07" on,
+    "ss09" on,
+    "ss10" on;
+  font-family: "CoFo Raffine";
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.48px;
+  text-transform: uppercase;
+}
+
+p {
+  color: #2c5c72;
+  font-variant-numeric: ordinal slashed-zero;
+  font-feature-settings:
+    "sinf" on,
+    "dlig" on,
+    "salt" on;
+
+  font-family: "Manifold CF";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 125%; /* 17.5px */
+}
+
+.propos-collection {
+  border-left: 1px solid #2c5c72;
+  display: flex;
+  padding-left: 15px;
 }
 
 #sideMenu {
@@ -91,6 +223,7 @@ body {
 }
 
 #overlay-title {
+  font-family: "CoFo Raffine", Arial, sans-serif;
   margin: 0 0 12px;
   font-size: 17px;
   font-weight: 600;

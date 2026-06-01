@@ -15,6 +15,16 @@ import model3D8Url from "../Ressources/modele_3d_02.glb";
 import starBtnUrl from "../Ressources/star-bouton.svg";
 
 // =====================
+// ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ ВЕРХНЕЙ ТОЧКИ МОДЕЛИ
+// =====================
+function getTopPoint(object) {
+  const box = new THREE.Box3().setFromObject(object);
+  const center = box.getCenter(new THREE.Vector3());
+
+  return new THREE.Vector3(center.x, box.max.y, center.z);
+}
+
+// =====================
 // DONNÉES BOUTONS INFO
 // Ajuste les anchor (coordonnées monde) et les textes selon tes modèles.
 // visibleMin/Max = plage de scrollProgress où le bouton est affiché.
@@ -181,7 +191,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 0.5;
-document.body.appendChild(renderer.domElement);
+document.getElementById("canvas-container").appendChild(renderer.domElement);
 
 // =====================
 // СЦЕНА И КАМЕРА
@@ -361,6 +371,13 @@ loader.load(island1Url, (gltf) => {
 
     scene.add(obj);
     console.log("✅ modele_3D_01 загружен!");
+
+    // Привязка кнопок к верхней точке модели
+    const top1 = getTopPoint(obj);
+    MODELS_DATA[0].buttons.forEach((btn, i) => {
+      btn.anchor = top1.clone();
+      btn.anchor.y += 2 + i * 2; // аккуратно вверх
+    });
   });
 
   // =====================
@@ -389,6 +406,13 @@ loader.load(island1Url, (gltf) => {
 
     scene.add(obj2);
     console.log("✅ modele_3D_02 загружен!");
+
+    // Привязка кнопок к верхней точке модели
+    const top2 = getTopPoint(obj2);
+    MODELS_DATA[1].buttons.forEach((btn, i) => {
+      btn.anchor = top2.clone();
+      btn.anchor.y += 2 + i * 2; // аккуратно вверх
+    });
   });
 
   // =====================
@@ -417,6 +441,13 @@ loader.load(island1Url, (gltf) => {
 
     scene.add(obj2);
     console.log("✅ modele_3D_03 загружен!");
+
+    // Привязка кнопок к верхней точке модели
+    const top3 = getTopPoint(obj2);
+    MODELS_DATA[2].buttons.forEach((btn, i) => {
+      btn.anchor = top3.clone();
+      btn.anchor.y += 2 + i * 2; // аккуратно вверх
+    });
   });
 
   // =====================
@@ -445,6 +476,13 @@ loader.load(island1Url, (gltf) => {
 
     scene.add(obj2);
     console.log("✅ modele_3D_04 загружен!");
+
+    // Привязка кнопок к верхней точке модели
+    const top4 = getTopPoint(obj2);
+    MODELS_DATA[3].buttons.forEach((btn, i) => {
+      btn.anchor = top4.clone();
+      btn.anchor.y += 2 + i * 2; // аккуратно вверх
+    });
   });
 
   // =====================
@@ -473,6 +511,13 @@ loader.load(island1Url, (gltf) => {
 
     scene.add(obj2);
     console.log("✅ modele_3D_05 загружен!");
+
+    // Привязка кнопок к верхней точке модели
+    const top5 = getTopPoint(obj2);
+    MODELS_DATA[4].buttons.forEach((btn, i) => {
+      btn.anchor = top5.clone();
+      btn.anchor.y += 2 + i * 2; // аккуратно вверх
+    });
   });
 
   // =====================
@@ -501,6 +546,13 @@ loader.load(island1Url, (gltf) => {
 
     scene.add(obj2);
     console.log("✅ modele_3D_06 загружен!");
+
+    // Привязка кнопок к верхней точке модели
+    const top6 = getTopPoint(obj2);
+    MODELS_DATA[5].buttons.forEach((btn, i) => {
+      btn.anchor = top6.clone();
+      btn.anchor.y += 5 + i * 3;
+    });
   });
 
   // =====================
@@ -529,6 +581,13 @@ loader.load(island1Url, (gltf) => {
 
     scene.add(obj2);
     console.log("✅ modele_3D_07 загружен!");
+
+    // Привязка кнопок к верхней точке модели
+    const top7 = getTopPoint(obj2);
+    MODELS_DATA[6].buttons.forEach((btn, i) => {
+      btn.anchor = top7.clone();
+      btn.anchor.y += 5 + i * 3;
+    });
   });
 
   // =====================
@@ -557,6 +616,13 @@ loader.load(island1Url, (gltf) => {
 
     scene.add(obj2);
     console.log("✅ modele_3D_08 загружен!");
+
+    // Привязка кнопок к верхней точке модели
+    const top8 = getTopPoint(obj2);
+    MODELS_DATA[7].buttons.forEach((btn, i) => {
+      btn.anchor = top8.clone();
+      btn.anchor.y += 5 + i * 3;
+    });
   });
 });
 
@@ -569,12 +635,15 @@ const islandPositions = [
   { x: 0, y: 0, z: 120, lookAt: new THREE.Vector3(0, 0, 0) },
   { x: 0, y: 5, z: 80, lookAt: new THREE.Vector3(0, 0, 0) },
   { x: 120, y: 15, z: -270, lookAt: new THREE.Vector3(120, 0, -350) },
+  { x: 160, y: 0, z: -300, lookAt: new THREE.Vector3(120, 0, -350) },
   { x: -180, y: 5, z: -520, lookAt: new THREE.Vector3(-180, 0, -600) },
+  { x: -220, y: 0, z: -520, lookAt: new THREE.Vector3(-180, 0, -600) },
   { x: 80, y: 10, z: -820, lookAt: new THREE.Vector3(80, 0, -900) },
   { x: -120, y: 5, z: -1120, lookAt: new THREE.Vector3(-120, 0, -1200) },
   { x: 200, y: 10, z: -1420, lookAt: new THREE.Vector3(200, 0, -1500) },
   { x: -200, y: 15, z: -1720, lookAt: new THREE.Vector3(-200, 0, -1800) },
   { x: 150, y: 5, z: -2020, lookAt: new THREE.Vector3(150, 0, -2100) },
+  { x: 130, y: -5, z: -2120, lookAt: new THREE.Vector3(130, 0, -2200) },
 ];
 
 let scrollProgress = 0;
@@ -642,14 +711,14 @@ function animate() {
   water.material.uniforms["time"].value += WAVE_SPEED;
 
   // плавно догоняем скролл ← ИЗМЕНИ КОЭФФИЦИЕНТ ДЛЯ СКОРОСТИ СГЛАЖИВАНИЯ (меньше = медленнее)
-  scrollProgress += (targetProgress - scrollProgress) * 0.05;
+  scrollProgress += (targetProgress - scrollProgress) * 0.02;
 
   // базовая позиция и lookAt по маршруту
   const { pos, look } = getCameraState(scrollProgress);
 
   // применяем смещение от мыши (±10°)
-  const offsetX = mouse.x * TILT_LIMIT; // горизонталь
-  const offsetY = mouse.y * TILT_LIMIT; // вертикаль
+  const offsetX = 0;
+  const offsetY = 0;
 
   // направление взгляда
   const direction = new THREE.Vector3().subVectors(look, pos).normalize();
@@ -697,6 +766,7 @@ function animate() {
 
   // ── Mise à jour des boutons info (projection 3D → écran) ──
   const screenVec = new THREE.Vector3();
+
   MODELS_DATA.forEach((model) => {
     const center = (model.visibleMin + model.visibleMax) / 2;
     const halfRange = (model.visibleMax - model.visibleMin) / 2;
@@ -705,11 +775,41 @@ function animate() {
 
     model.buttons.forEach((btn) => {
       if (!btn.element) return;
+
+      // проверка: не за камерой ли точка
+      const camDir = new THREE.Vector3();
+      camera.getWorldDirection(camDir);
+
+      const toPoint = new THREE.Vector3().subVectors(
+        btn.anchor,
+        camera.position,
+      );
+
+      if (camDir.dot(toPoint) < 0) {
+        btn.element.style.opacity = 0;
+        btn.element.style.pointerEvents = "none";
+        return;
+      }
+
+      // проекция
       screenVec.copy(btn.anchor).project(camera);
+
       const x = (screenVec.x * 0.5 + 0.5) * window.innerWidth;
-      const y = (-screenVec.y * 0.5 + 0.5) * window.innerHeight;
-      btn.element.style.left = x + "px";
-      btn.element.style.top = y + "px";
+      const y = THREE.MathUtils.clamp(
+        (-screenVec.y * 0.5 + 0.5) * window.innerHeight,
+        40,
+        window.innerHeight - 40,
+      );
+
+      // сглаживание (единственное!)
+      if (!btn.screenPos) btn.screenPos = { x, y };
+
+      btn.screenPos.x += (x - btn.screenPos.x) * 0.1;
+      btn.screenPos.y += (y - btn.screenPos.y) * 0.1;
+
+      btn.element.style.left = Math.round(btn.screenPos.x) + "px";
+      btn.element.style.top = Math.round(btn.screenPos.y) + "px";
+
       btn.element.style.opacity = screenVec.z < 1 ? opacity : 0;
       btn.element.style.pointerEvents =
         opacity > 0.3 && screenVec.z < 1 ? "auto" : "none";
@@ -717,6 +817,17 @@ function animate() {
   });
 
   renderer.render(scene, camera);
+
+  // =====================
+  // КОНТРОЛЬ ВИДИМОСТИ ARTISTE-СЕКЦИИ
+  // =====================
+  // Показываем artiste когда пользователь достигает последней позиции (индекс ~10)
+  const artisteSection = document.getElementById("artiste-section");
+  if (scrollProgress >= 10) {
+    artisteSection.classList.add("visible");
+  } else {
+    artisteSection.classList.remove("visible");
+  }
 }
 
 animate();
