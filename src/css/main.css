@@ -315,6 +315,40 @@ p {
   text-transform: uppercase;
 }
 
+.menu-item:has(.label.active) .menu-icon .ripple-menu {
+  display: block;
+}
+.menu-icon .ripple-menu {
+  display: none;
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(44, 92, 114, 0.55);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.menu-icon .ripple-menu:nth-child(1) {
+  width: 30px;
+  height: 30px;
+  border-color: rgba(44, 92, 114, 0.75);
+}
+.menu-icon .ripple-menu:nth-child(2) {
+  width: 36px;
+  height: 36px;
+  border-color: rgba(44, 92, 114, 0.52);
+}
+.menu-icon .ripple-menu:nth-child(3) {
+  width: 42px;
+  height: 42px;
+  border-color: rgba(44, 92, 114, 0.38);
+}
+.menu-icon .ripple-menu:nth-child(4) {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(44, 92, 114, 0.23);
+}
 .label:hover {
   color: rgba(44, 92, 114, 0.6);
 }
