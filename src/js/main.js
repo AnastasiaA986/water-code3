@@ -653,51 +653,123 @@ loader.load(island1Url, (gltf) => {
 // НАВИГАЦИЯ ПО ОСТРОВАМ
 // =====================
 const islandPositions = [
-  { x: 0, y: 0, z: 120, lookAt: new THREE.Vector3(0, 0, 0) },
-  { x: 0, y: 5, z: 80, lookAt: new THREE.Vector3(0, 0, 0) },
-  { x: 120, y: 15, z: -270, lookAt: new THREE.Vector3(120, 0, -350) },
-  { x: 160, y: 0, z: -300, lookAt: new THREE.Vector3(120, 0, -350) },
-  { x: -180, y: 5, z: -520, lookAt: new THREE.Vector3(-180, 0, -600) },
-  { x: -220, y: 0, z: -520, lookAt: new THREE.Vector3(-180, 0, -600) },
-  { x: 80, y: 10, z: -820, lookAt: new THREE.Vector3(80, 0, -900) },
-  { x: -120, y: 5, z: -1120, lookAt: new THREE.Vector3(-120, 0, -1200) },
-  { x: 200, y: 10, z: -1420, lookAt: new THREE.Vector3(200, 0, -1500) },
-  { x: -200, y: 15, z: -1720, lookAt: new THREE.Vector3(-200, 0, -1800) },
-  { x: 150, y: 5, z: -2020, lookAt: new THREE.Vector3(150, 0, -2100) },
-  { x: 130, y: -5, z: -2120, lookAt: new THREE.Vector3(130, 0, -2200) },
+  { x: 0, y: 0, z: 120, lookAt: new THREE.Vector3(0, 0, 0), rotation: 0.04 },
+  { x: 0, y: 5, z: 80, lookAt: new THREE.Vector3(0, 0, 0), rotation: -0.04 },
+  {
+    x: 120,
+    y: 15,
+    z: -270,
+    lookAt: new THREE.Vector3(120, 0, -350),
+    rotation: 0.05,
+  },
+  {
+    x: 160,
+    y: 0,
+    z: -300,
+    lookAt: new THREE.Vector3(120, 0, -350),
+    rotation: -0.05,
+  },
+  {
+    x: -180,
+    y: 5,
+    z: -520,
+    lookAt: new THREE.Vector3(-180, 0, -600),
+    rotation: 0.05,
+  },
+  {
+    x: -220,
+    y: 0,
+    z: -520,
+    lookAt: new THREE.Vector3(-180, 0, -600),
+    rotation: -0.05,
+  },
+  {
+    x: 80,
+    y: 10,
+    z: -820,
+    lookAt: new THREE.Vector3(80, 0, -900),
+    rotation: 0.04,
+  },
+  {
+    x: -120,
+    y: 5,
+    z: -1120,
+    lookAt: new THREE.Vector3(-120, 0, -1200),
+    rotation: -0.04,
+  },
+  {
+    x: 200,
+    y: 10,
+    z: -1420,
+    lookAt: new THREE.Vector3(200, 0, -1500),
+    rotation: 0.04,
+  },
+  {
+    x: -200,
+    y: 15,
+    z: -1720,
+    lookAt: new THREE.Vector3(-200, 0, -1800),
+    rotation: -0.04,
+  },
+  {
+    x: 150,
+    y: 5,
+    z: -2020,
+    lookAt: new THREE.Vector3(150, 0, -2100),
+    rotation: 0.04,
+  },
+  {
+    x: 130,
+    y: -5,
+    z: -2120,
+    lookAt: new THREE.Vector3(130, 0, -2200),
+    rotation: -0.04,
+  },
 ];
 
 let scrollProgress = 0;
 let targetProgress = 0;
 
-// =====================
-// ПОВОРОТ МЫШЬЮ ±5°
-// =====================
-const TILT_LIMIT = THREE.MathUtils.degToRad(1); // ← УМЕНЬШИ ЧИСЛО ДЛЯ МЕНЬШЕГО НАКЛОНА
-const mouse = { x: 0, y: 0 }; // -1 до +1
+const SCROLL_SENSITIVITY = 0.0075; // уменьшенная чувствительность, чтобы не было резких рывков
+const SCROLL_EASE = 0.06; // более мягкое сглаживание прогресса
 
-window.addEventListener("mousemove", (e) => {
-  // нормализуем позицию мыши от -1 до +1
-  mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
-  mouse.y = (e.clientY / window.innerHeight - 0.5) * 2;
-});
+const LAST_MODEL_INDEX = 10;
+const LAST_MODEL_OVERSHOOT = 2; // насколько дальше последней модели можно прокрутить (для более плавного перехода к открытию секции)
+const LOCKED_CAMERA_PROGRESS = LAST_MODEL_INDEX + LAST_MODEL_OVERSHOOT;
+const SECTION_TRIGGER = 10.75; // прогресс, при котором открывается последняя секция с моделью 8 (можно изменить для более раннего или позднего открытия)
+const MAX_PROGRESS = 11;
+scrollProgress = LAST_MODEL_INDEX;
+
+let sceneLocked = false;
 
 // скролл
-window.addEventListener("wheel", (e) => {
-  targetProgress += e.deltaY * 0.002; // ← СКОРОСТЬ СКРОЛЛА (меньше = медленнее)
-  targetProgress = Math.max(
-    0,
-    Math.min(islandPositions.length - 1, targetProgress),
-  );
-});
+window.addEventListener(
+  "wheel",
+  (e) => {
+    const rawDelta = e.deltaY * SCROLL_SENSITIVITY;
+    const deltaProgress =
+      Math.sign(rawDelta) * Math.min(Math.abs(rawDelta), 0.02);
+    const willOpenSection =
+      targetProgress >= SECTION_TRIGGER || scrollProgress >= SECTION_TRIGGER;
+
+    if (willOpenSection && deltaProgress > 0) {
+      e.preventDefault();
+      return;
+    }
+
+    targetProgress += deltaProgress;
+    targetProgress = Math.max(0, Math.min(MAX_PROGRESS, targetProgress));
+  },
+  { passive: false },
+);
 
 function getCameraState(progress) {
   const indexA = Math.floor(progress);
   const indexB = Math.min(indexA + 1, islandPositions.length - 1);
   let t = progress - indexA;
 
-  // замедление при приближении (ease-out quartic) ← ИЗМЕНИ СТЕПЕНЬ ДЛЯ СИЛЫ ЗАМЕДЛЕНИЯ (4 = quartic, сильнее чем cubic)
-  t = 1 - Math.pow(1 - t, 4);
+  // мягкий переход между позициями без резкого ускорения
+  t = t * t * (3 - 2 * t); // smoothstep
 
   const a = islandPositions[indexA];
   const b = islandPositions[indexB];
@@ -731,11 +803,17 @@ function animate() {
   requestAnimationFrame(animate);
   water.material.uniforms["time"].value += WAVE_SPEED;
 
-  // плавно догоняем скролл ← ИЗМЕНИ КОЭФФИЦИЕНТ ДЛЯ СКОРОСТИ СГЛАЖИВАНИЯ (меньше = медленнее)
-  scrollProgress += (targetProgress - scrollProgress) * 0.02;
+  // плавно догоняем скролл
+  scrollProgress += (targetProgress - scrollProgress) * SCROLL_EASE;
 
   // базовая позиция и lookAt по маршруту
-  const { pos, look } = getCameraState(scrollProgress);
+  const cameraProgress = Math.min(scrollProgress, LOCKED_CAMERA_PROGRESS);
+  const { pos, look } = getCameraState(cameraProgress);
+
+  // Scene lock state: остаётся заблокированной после выхода за последнюю модель
+  const sectionVisible = scrollProgress >= SECTION_TRIGGER;
+  sceneLocked = scrollProgress >= LOCKED_CAMERA_PROGRESS;
+  controls.enabled = !sceneLocked;
 
   // применяем смещение от мыши (±10°)
   const offsetX = 0;
@@ -842,9 +920,8 @@ function animate() {
   // =====================
   // КОНТРОЛЬ ВИДИМОСТИ ARTISTE-СЕКЦИИ
   // =====================
-  // Показываем artiste когда пользователь достигает последней позиции (индекс ~10)
   const artisteSection = document.getElementById("artiste-section");
-  if (scrollProgress >= 10) {
+  if (sectionVisible) {
     artisteSection.classList.add("visible");
   } else {
     artisteSection.classList.remove("visible");
