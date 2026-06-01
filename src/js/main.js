@@ -761,21 +761,14 @@ function animate() {
 
   // обновляем активное меню в зависимости от прогресса
   let activeIndex;
-  if (scrollProgress < 4)
+  if (scrollProgress < 10)
     activeIndex = 0; // Accueil для первых 4 островов
-  else if (scrollProgress < 6)
+  else if (scrollProgress < 10.5)
     activeIndex = 1; // Collection для следующих 2
-  else if (scrollProgress < 7)
-    activeIndex = 2; // Iris для следующих 1
-  else activeIndex = 3; // Oceanix для последнего
+  else activeIndex = 2;
 
   // снимаем active со всех
-  const menuItems = [
-    "menu-accueil",
-    "menu-collection",
-    "menu-iris",
-    "menu-oceanix",
-  ];
+  const menuItems = ["menu-collection", "menu-iris", "menu-oceanix"];
   menuItems.forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.classList.remove("active");
@@ -795,9 +788,17 @@ function animate() {
     const opacity = Math.max(0, 1 - dist / halfRange);
 
     model.buttons.forEach((btn) => {
+      // кнопка создана?
       if (!btn.element) return;
 
-      // проверка: не за камерой ли точка
+      // модель ещё не загрузилась → anchor нет
+      if (!btn.anchor) {
+        btn.element.style.opacity = 0;
+        btn.element.style.pointerEvents = "none";
+        return;
+      }
+
+      // проверка: точка за камерой?
       const camDir = new THREE.Vector3();
       camera.getWorldDirection(camDir);
 
@@ -812,7 +813,7 @@ function animate() {
         return;
       }
 
-      // проекция
+      // проекция 3D → экран
       screenVec.copy(btn.anchor).project(camera);
 
       const x = (screenVec.x * 0.5 + 0.5) * window.innerWidth;
@@ -822,7 +823,7 @@ function animate() {
         window.innerHeight - 40,
       );
 
-      // сглаживание (единственное!)
+      // сглаживание
       if (!btn.screenPos) btn.screenPos = { x, y };
 
       btn.screenPos.x += (x - btn.screenPos.x) * 0.1;
