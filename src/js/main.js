@@ -1,3 +1,19 @@
+// === ПРЕЛОАДЕР ===
+document.body.classList.add("loading");
+setTimeout(() => {
+  // Сначала плавно скрываем спиннер и белый фон
+  const loader = document.getElementById("loader");
+  const loaderOverlay = document.getElementById("loader-overlay");
+  if (loader) loader.style.opacity = "0";
+  if (loaderOverlay) loaderOverlay.style.opacity = "0";
+
+  // Через 400ms (пока оверлей ещё тает) — убираем класс loading,
+  // чтобы canvas и меню начали появляться с zoom-эффектом
+  setTimeout(() => {
+    document.body.classList.remove("loading");
+  }, 500);
+}, 3000);
+
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Water } from "three/examples/jsm/objects/Water.js";

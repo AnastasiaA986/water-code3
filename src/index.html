@@ -10,7 +10,13 @@
     <link rel="stylesheet" href="https://use.typekit.net/bok7mep.css" />
   </head>
 
-  <body>
+  <body class="loading">
+    <div id="loader-overlay"></div>
+    <div id="loader">
+      <div class="inner rotate-one"></div>
+      <div class="inner rotate-two"></div>
+      <div class="inner rotate-three"></div>
+    </div>
     <!-- ===================== -->
     <!-- 3D CANVAS BACKGROUND (fixed) -->
     <!-- ===================== -->
@@ -20,10 +26,28 @@
     <!-- SIDE MENU -->
     <!-- ===================== -->
     <div id="sideMenu">
-      <span id="menu-accueil" class="label active">Accueil</span>
-      <span id="menu-collection" class="label">Collection</span>
-      <span id="menu-iris" class="label">Iris Van Herpen</span>
-      <span id="menu-oceanix" class="label">Oceanix</span>
+      <div class="menu-labels">
+        <div class="menu-item">
+          <div class="menu-icon">
+            <img src="./Ressources/star-bouton-small.svg" alt="" />
+          </div>
+          <span id="menu-collection" class="label">Collection</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-icon">
+            <img src="./Ressources/star-bouton-small.svg" alt="" />
+          </div>
+          <span id="menu-iris" class="label">Iris Van Herpen</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-icon">
+            <img src="./Ressources/star-bouton-small.svg" alt="" />
+          </div>
+          <span id="menu-oceanix" class="label">Oceanix</span>
+        </div>
+      </div>
     </div>
 
     <!-- ===================== -->
