@@ -8,14 +8,19 @@ body {
   background: transparent;
 }
 
-body.loading #canvas-container,
-body.loading #sideMenu,
-body.loading #info-buttons,
-body.loading #info-overlay,
-body.loading #artiste-section {
+#sideMenu,
+#info-buttons {
   opacity: 0;
   pointer-events: none;
-  transform: scale(1.12);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+#sideMenu.scene-visible,
+#info-buttons.scene-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 #canvas-container,
@@ -115,6 +120,88 @@ body.loading #loader-overlay {
   100% {
     transform: rotateZ(360deg);
   }
+}
+
+h1 {
+  color: #fff;
+  font-family: "CoFo Raffine";
+  text-align: center;
+  font-size: 140px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 13.986px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+h4 {
+  color: #fff;
+  text-align: center;
+  font-family: "Manifold CF";
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 16.9px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+#intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  transition: opacity 0.5s ease;
+}
+
+#intro-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-text {
+  color: #fff;
+  text-align: center;
+  font-family: "Manifold CF";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 125%;
+}
+
+#intro-btn {
+  margin-top: 55px;
+  font-family: "Manifold CF";
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.12px;
+  color: #2c5c72;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+#intro-btn:hover {
+  color: #fff;
 }
 
 /* ── 3D Canvas Background (fixed, behind everything) ── */
