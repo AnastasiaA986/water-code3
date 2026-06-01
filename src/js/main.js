@@ -42,8 +42,15 @@ function getTopPoint(object) {
 
 // =====================
 // DONNÉES BOUTONS INFO
-// Ajuste les anchor (coordonnées monde) et les textes selon tes modèles.
+// offset = décalage XYZ relatif au sommet du modèle (calculé automatiquement).
+//   X  : gauche(-) / droite(+)
+//   Y  : bas(-)   / haut(+)   — ajouter des unités pour monter le bouton
+//   Z  : devant(-) / derrière(+)
 // visibleMin/Max = plage de scrollProgress où le bouton est affiché.
+//   scrollProgress 0→11 correspond aux 12 waypoints de islandPositions.
+//   Île 1 ≈ 0–1.5 | Île 2 ≈ 1.5–3.5 | Île 3 ≈ 3.5–5.5
+//   Île 4 ≈ 5.5–7 | Île 5 ≈ 6.5–8   | Île 6 ≈ 7.5–9
+//   Île 7 ≈ 8.5–10 | Île 8 ≈ 9.5–11.5
 // =====================
 const MODELS_DATA = [
   {
@@ -51,13 +58,12 @@ const MODELS_DATA = [
     visibleMax: 1.5,
     buttons: [
       {
-        //  augmente/baisse le 2e chiffre (Y) pour monter/descendre le bouton sur le personnage. Les titres et textes sont tous marqués "Remplace ce texte..." pour que tu remplisses le vrai contenu.
-        anchor: new THREE.Vector3(-1, 26, 4),
+        offset: new THREE.Vector3(0, 8, 0),
         title: "Personnage 1 – Info A",
         text: "Remplace ce texte par l'information que tu veux afficher pour le premier personnage.",
       },
       {
-        anchor: new THREE.Vector3(4, 16, 2),
+        offset: new THREE.Vector3(4, 5, 0),
         title: "Personnage 1 – Info B",
         text: "Deuxième information pour le premier personnage.",
       },
@@ -65,81 +71,81 @@ const MODELS_DATA = [
   },
   {
     visibleMin: 1.5,
-    visibleMax: 2.5,
+    visibleMax: 3.5,
     buttons: [
       {
-        anchor: new THREE.Vector3(120, 24, -346),
+        offset: new THREE.Vector3(0, 8, 0),
         title: "Personnage 2 – Info A",
         text: "Information pour le deuxième personnage.",
       },
     ],
   },
   {
-    visibleMin: 2.5,
-    visibleMax: 3.5,
+    visibleMin: 3.5,
+    visibleMax: 5.5,
     buttons: [
       {
-        anchor: new THREE.Vector3(-183, 25, -596),
+        offset: new THREE.Vector3(0, 8, 0),
         title: "Personnage 3 – Info A",
         text: "Information pour le troisième personnage.",
       },
       {
-        anchor: new THREE.Vector3(-178, 15, -598),
+        offset: new THREE.Vector3(4, 5, 0),
         title: "Personnage 3 – Info B",
         text: "Deuxième information pour le troisième personnage.",
       },
     ],
   },
   {
-    visibleMin: 3.5,
-    visibleMax: 4.5,
+    visibleMin: 5.5,
+    visibleMax: 7,
     buttons: [
       {
-        anchor: new THREE.Vector3(80, 30, -896),
+        offset: new THREE.Vector3(0, 8, 0),
         title: "Personnage 4 – Info A",
         text: "Information pour le quatrième personnage.",
       },
     ],
   },
   {
-    visibleMin: 4.5,
-    visibleMax: 5.5,
+    visibleMin: 6.5,
+    visibleMax: 8,
     buttons: [
       {
-        anchor: new THREE.Vector3(-121, 25, -1191),
+        offset: new THREE.Vector3(0, 8, 0),
         title: "Personnage 5 – Info A",
         text: "Information pour le cinquième personnage.",
       },
     ],
   },
   {
-    visibleMin: 5.5,
-    visibleMax: 6.5,
+    visibleMin: 7.5,
+    visibleMax: 9,
     buttons: [
       {
-        anchor: new THREE.Vector3(200, 8, -1496),
+        offset: new THREE.Vector3(0, 8, 0),
         title: "Personnage 6 – Info A",
         text: "Information pour le sixième personnage.",
       },
     ],
   },
   {
-    visibleMin: 6.5,
-    visibleMax: 7.5,
+    visibleMin: 8.5,
+    visibleMax: 10,
     buttons: [
       {
-        anchor: new THREE.Vector3(-203, 24, -1796),
+        offset: new THREE.Vector3(0, 8, 0),
         title: "Personnage 7 – Info A",
         text: "Information pour le septième personnage.",
       },
     ],
   },
   {
-    visibleMin: 7.5,
-    visibleMax: 9.0,
+    visibleMin: 9.5,
+    visibleMax: 11.5,
     buttons: [
       {
-        anchor: new THREE.Vector3(150, 30, -2096),
+        offset: new THREE.Vector3(0, 8, 0),
         title: "Personnage 8 – Info A",
         text: "Information pour le huitième personnage.",
       },
@@ -390,9 +396,8 @@ loader.load(island1Url, (gltf) => {
 
     // Привязка кнопок к верхней точке модели
     const top1 = getTopPoint(obj);
-    MODELS_DATA[0].buttons.forEach((btn, i) => {
-      btn.anchor = top1.clone();
-      btn.anchor.y += 2 + i * 2; // аккуратно вверх
+    MODELS_DATA[0].buttons.forEach((btn) => {
+      btn.anchor = top1.clone().add(btn.offset);
     });
   });
 
