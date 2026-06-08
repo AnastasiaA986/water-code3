@@ -9,6 +9,8 @@ body {
 }
 
 #sideMenu,
+#main-logo,
+#scroll-indicator,
 #info-buttons {
   opacity: 0;
   pointer-events: none;
@@ -18,6 +20,8 @@ body {
 }
 
 #sideMenu.scene-visible,
+#main-logo.visible,
+#scroll-indicator.visible,
 #info-buttons.scene-visible {
   opacity: 1;
   pointer-events: auto;
@@ -241,6 +245,68 @@ h4 {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+#main-logo {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5px;
+  top: 4%;
+  right: 3%;
+}
+
+h5 {
+  margin: 0;
+  color: #fff;
+  font-family: "CoFo Raffine";
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.logo-sous-titre {
+  color: #fff;
+  font-family: "Manifold CF";
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 3.74px;
+  text-transform: uppercase;
+}
+
+#scroll-indicator {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 3%;
+  bottom: 4%;
+}
+
+#scroll-indicator.white img {
+  filter: brightness(0) invert(1);
+}
+
+#scroll-indicator img:first-child {
+  position: relative; /* фон */
+  z-index: 1;
+  animation: spin 8s linear infinite;
+}
+
+#scroll-indicator img:last-child {
+  position: absolute; /* стрелка поверх */
+  z-index: 2;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ── Scroll Tracker (invisible, creates scrollable height) ── */
