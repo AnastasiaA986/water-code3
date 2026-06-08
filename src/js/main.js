@@ -22,7 +22,6 @@ document.getElementById("intro-btn").addEventListener("click", () => {
   document.getElementById("info-buttons").classList.add("scene-visible");
   document.querySelector("#main-logo").classList.add("visible");
   document.querySelector("#scroll-indicator").classList.add("visible");
-  document.querySelector("#scroll-indicator").classList.add("white");
 
   modelsGroup.visible = true;
   modelsIntroActive = true;
@@ -205,6 +204,13 @@ const overlayText = document.getElementById("overlay-text");
 document.getElementById("overlay-close").addEventListener("click", () => {
   overlay.classList.remove("visible");
 });
+
+const scrollInd = document.getElementById("scroll-indicator");
+const scrollImgs = scrollInd.querySelectorAll("img");
+const mainLogo = document.getElementById("main-logo");
+
+const sectionTl = gsap.timeline({ paused: true });
+sectionTl.to(mainLogo, { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 0);
 
 function showOverlay(title, text) {
   overlayTitle.textContent = title;
@@ -984,16 +990,29 @@ function animate() {
   // КОНТРОЛЬ ВИДИМОСТИ COMBINED-СЕКЦИИ
   // =====================
   const combinedSection = document.getElementById("combined-section");
+
+  if (sectionVisible !== prevSectionVisible) {
+    prevSectionVisible = sectionVisible;
+    if (sectionVisible) {
+      sectionTl.play();
+      scrollImgs.forEach((img) => (img.src = img.dataset.light));
+    } else {
+      sectionTl.reverse();
+      scrollImgs.forEach((img) => (img.src = img.dataset.dark));
+    }
+  }
+
   if (sectionVisible) {
     combinedSection.classList.add("visible");
 
-    const tl = gsap.timeline(); // Déclaration de la timeline, enregistrée dans une variable "tl"
-    tl.to(".artiste-image", { y: -100, opacity: 1, duration: 1 }); // Première animation ajoutée à la timeline
-    tl.to(".artiste-biographie", { y: -100, opacity: 1, duration: 1 }); // Seconde animation ajoutée à la timeline
-    tl.to(".propos-collection", { y: -100, opacity: 1, duration: 1 }); // Troisième animation ajoutée à la timeline
+    const tl = gsap.timeline();
+    tl.to(".artiste-image", { y: -100, opacity: 1, duration: 1 });
+    tl.to(".artiste-biographie", { y: -100, opacity: 1, duration: 1 });
+    tl.to(".propos-collection", { y: -100, opacity: 1, duration: 1 });
   } else {
     combinedSection.classList.remove("visible");
   }
 }
 
+let prevSectionVisible = false;
 animate();

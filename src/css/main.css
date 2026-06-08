@@ -277,16 +277,12 @@ h5 {
 }
 
 #scroll-indicator {
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   right: 3%;
   bottom: 4%;
-}
-
-#scroll-indicator.white img {
-  filter: brightness(0) invert(1);
 }
 
 #scroll-indicator img:first-child {
@@ -787,5 +783,60 @@ p {
   }
   100% {
     transform: rotateZ(360deg);
+  }
+}
+
+.fin-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+.fin-content h1,
+.fin-content h4 {
+  color: #2c5c72;
+}
+
+.page-collection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modeles {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+  width: 1512px;
+  height: 982px;
+  border-radius: 5px;
+  opacity: 0.4;
+  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.modeles {
+  overflow: hidden;
+}
+
+.modeles-track {
+  display: flex;
+  gap: 20px;
+  animation: scroll-carousel 20s linear infinite;
+}
+
+model-viewer {
+  width: 300px;
+  height: 400px;
+  flex-shrink: 0;
+}
+
+@keyframes scroll-carousel {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }

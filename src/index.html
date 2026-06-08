@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="/src/css/main.css" />
     <link rel="stylesheet" href="https://use.typekit.net/bok7mep.css" />
-    <link rel="stylesheet" href="https://use.typekit.net/bok7mep.css" />
   </head>
 
   <body class="loading">
@@ -44,10 +43,20 @@
         <h5>Architectonics</h5>
         <p class="logo-sous-titre">Collection d’Iris Van Herpen</p>
       </div>
-      <div id="scroll-indicator">
-        <img src="/src/Ressources/Scroll-down.svg" alt="" />
-        <img src="/src/Ressources/arrow-down.svg" alt="" />
-      </div>
+    </div>
+    <div id="scroll-indicator">
+      <img
+        data-light="/src/Ressources/Scroll-down.svg"
+        data-dark="/src/Ressources/Scroll-down-white.svg"
+        src="/src/Ressources/Scroll-down-white.svg"
+        alt=""
+      />
+      <img
+        data-light="/src/Ressources/arrow-down.svg"
+        data-dark="/src/Ressources/arrow-down-white.svg"
+        src="/src/Ressources/arrow-down-white.svg"
+        alt=""
+      />
     </div>
 
     <!-- ===================== -->
@@ -192,15 +201,22 @@
       </div>
 
       <div class="combined-page">
-        <div class="fin-content">
-          <div class="intro-titres">
-            <h1>Architectonics</h1>
-            <h4>Collection d’Iris Van Herpen</h4>
+        <div class="page-collection">
+          <div class="fin-content">
+            <div class="intro-titres">
+              <h1>Architectonics</h1>
+              <h4>Collection d’Iris Van Herpen</h4>
+            </div>
+            <div class="intro-bouton-decorative">
+              <img src="./Ressources/intro-decorative.svg" alt="" />
+              <button class="bouton" id="intro-btn">Retour à la réalité</button>
+              <img src="./Ressources/intro-decorative2.svg" alt="" />
+            </div>
           </div>
-          <div class="intro-bouton-decorative">
-            <img src="./Ressources/intro-decorative.svg" alt="" />
-            <button class="bouton" id="intro-btn">Retour à la réalité</button>
-            <img src="./Ressources/intro-decorative2.svg" alt="" />
+          <div class="modeles">
+            <div class="modeles-track">
+              <model-viewer></model-viewer>
+            </div>
           </div>
         </div>
       </div>
