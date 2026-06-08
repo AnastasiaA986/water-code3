@@ -14,6 +14,18 @@ setTimeout(() => {
   }, 500);
 }, 3000);
 
+document.getElementById("intro-btn").addEventListener("click", () => {
+  const intro = document.getElementById("intro-screen");
+  intro.classList.add("hidden");
+
+  document.getElementById("sideMenu").classList.add("scene-visible");
+  document.getElementById("info-buttons").classList.add("scene-visible");
+
+  modelsGroup.visible = true;
+  modelsIntroActive = true;
+  modelsIntroProgress = 0;
+});
+
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Water } from "three/examples/jsm/objects/Water.js";
@@ -219,6 +231,15 @@ document.getElementById("canvas-container").appendChild(renderer.domElement);
 // СЦЕНА И КАМЕРА
 // =====================
 const scene = new THREE.Scene();
+// =====================
+// ГРУППА ДЛЯ ОСТРОВОВ И МОДЕЛЕЙ (скрыта до нажатия кнопки)
+// =====================
+const modelsGroup = new THREE.Group();
+modelsGroup.visible = false;
+scene.add(modelsGroup);
+
+let modelsIntroActive = false;
+let modelsIntroProgress = 0;
 
 const camera = new THREE.PerspectiveCamera(
   50,
@@ -341,7 +362,7 @@ loader.load(island1Url, (gltf) => {
       }
     });
 
-    scene.add(clone);
+    modelsGroup.add(clone);
 
     // 💡 свой свет над каждым островом
     const light = new THREE.SpotLight(0xff2700, 80); // ← ИНТЕНСИВНОСТЬ СВЕТА (меньше = слабее)
@@ -352,8 +373,8 @@ loader.load(island1Url, (gltf) => {
     light.decay = 2;
     light.castShadow = true;
 
-    scene.add(light);
-    scene.add(light.target);
+    modelsGroup.add(light);
+    modelsGroup.add(light.target);
   }
 
   // расставляем острова
@@ -391,7 +412,7 @@ loader.load(island1Url, (gltf) => {
       }
     });
 
-    scene.add(obj);
+    modelsGroup.add(obj);
     console.log("✅ modele_3D_01 загружен!");
 
     // Привязка кнопок к верхней точке модели
@@ -425,7 +446,7 @@ loader.load(island1Url, (gltf) => {
       }
     });
 
-    scene.add(obj2);
+    modelsGroup.add(obj2);
     console.log("✅ modele_3D_02 загружен!");
 
     // Привязка кнопок к верхней точке модели
@@ -460,7 +481,7 @@ loader.load(island1Url, (gltf) => {
       }
     });
 
-    scene.add(obj2);
+    modelsGroup.add(obj2);
     console.log("✅ modele_3D_03 загружен!");
 
     // Привязка кнопок к верхней точке модели
@@ -495,7 +516,7 @@ loader.load(island1Url, (gltf) => {
       }
     });
 
-    scene.add(obj2);
+    modelsGroup.add(obj2);
     console.log("✅ modele_3D_04 загружен!");
 
     // Привязка кнопок к верхней точке модели
@@ -530,7 +551,7 @@ loader.load(island1Url, (gltf) => {
       }
     });
 
-    scene.add(obj2);
+    modelsGroup.add(obj2);
     console.log("✅ modele_3D_05 загружен!");
 
     // Привязка кнопок к верхней точке модели
@@ -565,7 +586,7 @@ loader.load(island1Url, (gltf) => {
       }
     });
 
-    scene.add(obj2);
+    modelsGroup.add(obj2);
     console.log("✅ modele_3D_06 загружен!");
 
     // Привязка кнопок к верхней точке модели
@@ -600,7 +621,7 @@ loader.load(island1Url, (gltf) => {
       }
     });
 
-    scene.add(obj2);
+    modelsGroup.add(obj2);
     console.log("✅ modele_3D_07 загружен!");
 
     // Привязка кнопок к верхней точке модели
@@ -635,7 +656,7 @@ loader.load(island1Url, (gltf) => {
       }
     });
 
-    scene.add(obj2);
+    modelsGroup.add(obj2);
     console.log("✅ modele_3D_08 загружен!");
 
     // Привязка кнопок к верхней точке модели
@@ -746,6 +767,11 @@ let sceneLocked = false;
 window.addEventListener(
   "wheel",
   (e) => {
+    if (
+      !document.getElementById("sideMenu").classList.contains("scene-visible")
+    )
+      return;
+
     const rawDelta = e.deltaY * SCROLL_SENSITIVITY;
     const deltaProgress =
       Math.sign(rawDelta) * Math.min(Math.abs(rawDelta), 0.02);
@@ -915,6 +941,27 @@ function animate() {
         opacity > 0.3 && screenVec.z < 1 ? "auto" : "none";
     });
   });
+
+  // ── Плавное появление моделей ──
+  if (modelsIntroActive) {
+    modelsIntroProgress = Math.min(1, modelsIntroProgress + 0.02);
+
+    // fade‑in
+    modelsGroup.traverse((child) => {
+      if (child.isMesh) {
+        child.material.transparent = true;
+        child.material.opacity = modelsIntroProgress;
+      }
+    });
+
+    // zoom‑in
+    const scale = 0.9 + modelsIntroProgress * 0.1; // 0.9 → 1.0
+    modelsGroup.scale.setScalar(scale);
+
+    if (modelsIntroProgress === 1) {
+      modelsIntroActive = false;
+    }
+  }
 
   renderer.render(scene, camera);
 
