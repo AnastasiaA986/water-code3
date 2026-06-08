@@ -126,11 +126,11 @@ h1 {
   color: #fff;
   font-family: "CoFo Raffine";
   text-align: center;
-  font-size: 140px;
+  font-size: 9.2vw;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  letter-spacing: 13.986px;
+  letter-spacing: 14px;
   text-transform: uppercase;
   margin: 0;
 }
@@ -139,7 +139,7 @@ h4 {
   color: #fff;
   text-align: center;
   font-family: "Manifold CF";
-  font-size: 26px;
+  font-size: 1.7vw;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -153,6 +153,7 @@ h4 {
   inset: 0;
   z-index: 500;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   pointer-events: auto;
@@ -165,14 +166,16 @@ h4 {
 }
 
 .intro-content {
-  text-align: center;
+  position: fixed;
+  top: 25%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 60px;
 }
 
 .intro-text {
+  position: fixed;
   color: #fff;
   text-align: center;
   font-family: "Manifold CF";
@@ -180,10 +183,22 @@ h4 {
   font-style: normal;
   font-weight: 300;
   line-height: 125%;
+  bottom: 10%;
 }
 
-#intro-btn {
-  margin-top: 55px;
+.intro-bouton-decorative {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.bouton {
+  width: 318px;
+  height: 50px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: "Manifold CF";
   font-size: 14px;
   font-weight: 500;
@@ -191,17 +206,24 @@ h4 {
   letter-spacing: 1.12px;
   color: #2c5c72;
   background: #fff;
-  border-radius: 8px;
+  border-radius: 5px;
   border: 1px solid #fff;
-  padding: 14px 20px;
   cursor: pointer;
   transition:
     background 0.3s ease,
     color 0.3s ease;
 }
 
+.bouton::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 8px;
+  border: 1px solid #ffffff;
+}
+
 #intro-btn:hover {
-  color: #fff;
+  color: rgba(44, 92, 114, 0.4);
 }
 
 /* ── 3D Canvas Background (fixed, behind everything) ── */
