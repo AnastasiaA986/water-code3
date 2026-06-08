@@ -20,6 +20,9 @@ document.getElementById("intro-btn").addEventListener("click", () => {
 
   document.getElementById("sideMenu").classList.add("scene-visible");
   document.getElementById("info-buttons").classList.add("scene-visible");
+  document.querySelector("#main-logo").classList.add("visible");
+  document.querySelector("#scroll-indicator").classList.add("visible");
+  document.querySelector("#scroll-indicator").classList.add("white");
 
   modelsGroup.visible = true;
   modelsIntroActive = true;
@@ -983,12 +986,15 @@ function animate() {
   const combinedSection = document.getElementById("combined-section");
   if (sectionVisible) {
     combinedSection.classList.add("visible");
+    scrollInd.classList.remove("white");
+
     const tl = gsap.timeline(); // Déclaration de la timeline, enregistrée dans une variable "tl"
     tl.to(".artiste-image", { y: -100, opacity: 1, duration: 1 }); // Première animation ajoutée à la timeline
     tl.to(".artiste-biographie", { y: -100, opacity: 1, duration: 1 }); // Seconde animation ajoutée à la timeline
     tl.to(".propos-collection", { y: -100, opacity: 1, duration: 1 }); // Troisième animation ajoutée à la timeline
   } else {
     combinedSection.classList.remove("visible");
+    scrollInd.classList.add("white");
   }
 }
 
