@@ -20,6 +20,9 @@ document.getElementById("intro-btn").addEventListener("click", () => {
 
   document.getElementById("sideMenu").classList.add("scene-visible");
   document.getElementById("info-buttons").classList.add("scene-visible");
+  document.querySelector("#main-logo").classList.add("visible");
+  document.querySelector("#scroll-indicator").classList.add("visible");
+  document.querySelector("#scroll-indicator").classList.add("white");
 
   modelsGroup.visible = true;
   modelsIntroActive = true;
@@ -977,8 +980,10 @@ function animate() {
   const combinedSection = document.getElementById("combined-section");
   if (sectionVisible) {
     combinedSection.classList.add("visible");
+    scrollInd.classList.remove("white");
   } else {
     combinedSection.classList.remove("visible");
+    scrollInd.classList.add("white");
   }
 }
 
