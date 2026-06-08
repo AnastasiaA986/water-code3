@@ -38,6 +38,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+
 import island1Url from "../Ressources/Island.glb";
 import model3DUrl from "../Ressources/modele_3D_03.glb";
 import model3D2Url from "../Ressources/modele_3d_08.glb";
@@ -798,6 +799,10 @@ window.addEventListener(
       return;
     }
 
+    if (willOpenSection && deltaProgress < 0 && combinedSection.scrollTop > 0) {
+      return;
+    }
+
     targetProgress += deltaProgress;
     targetProgress = Math.max(0, Math.min(MAX_PROGRESS, targetProgress));
   },
@@ -840,6 +845,7 @@ window.addEventListener("resize", () => {
 // =====================
 // АНИМАЦИЯ
 // =====================
+
 function animate() {
   requestAnimationFrame(animate);
   water.material.uniforms["time"].value += WAVE_SPEED;
@@ -986,14 +992,71 @@ function animate() {
   const combinedSection = document.getElementById("combined-section");
   if (sectionVisible) {
     combinedSection.classList.add("visible");
-
-    const tl = gsap.timeline(); // Déclaration de la timeline, enregistrée dans une variable "tl"
-    tl.to(".artiste-image", { y: -100, opacity: 1, duration: 1 }); // Première animation ajoutée à la timeline
-    tl.to(".artiste-biographie", { y: -100, opacity: 1, duration: 1 }); // Seconde animation ajoutée à la timeline
-    tl.to(".propos-collection", { y: -100, opacity: 1, duration: 1 }); // Troisième animation ajoutée à la timeline
+    runArtisteAnimation();
   } else {
+    if (combinedSection.classList.contains("visible")) {
+      combinedSection.scrollTop = 0;
+      artisteAnimated = false;
+    }
     combinedSection.classList.remove("visible");
   }
+}
+
+// =====================
+// АНИМАЦИЯ COMBINED-СЕКЦИИ (запускается один раз)
+// =====================
+let artisteAnimated = false;
+
+gsap
+  .timeline({
+    scrollTrigger: {
+      trigger: "#combined-section .combined-page:nth-of-type(2)",
+      scroller: "#combined-section",
+      start: "top 20%",
+      end: "bottom 50%",
+      toggleActions: "play none none reverse",
+    },
+  })
+  .fromTo(
+    ".oceanix-image",
+    { y: 100, opacity: 0 },
+    { y: 0, opacity: 1, duration: 1.3, ease: "power3.out" },
+  )
+  .fromTo(
+    ".oceanix-biographie",
+    { y: 100, opacity: 0 },
+    { y: 0, opacity: 1, duration: 1.3, ease: "power3.out" },
+    "-=0.6",
+  )
+  .fromTo(
+    ".propos",
+    { y: 100, opacity: 0 },
+    { y: 0, opacity: 1, duration: 1.3, ease: "power3.out" },
+    "-=0.6",
+  );
+
+function runArtisteAnimation() {
+  if (artisteAnimated) return;
+  artisteAnimated = true;
+  gsap
+    .timeline()
+    .fromTo(
+      ".artiste-image",
+      { y: 100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.3, ease: "power3.out" },
+    )
+    .fromTo(
+      ".artiste-biographie",
+      { y: 100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.3, ease: "power3.out" },
+      "-=0.6",
+    )
+    .fromTo(
+      ".propos-collection",
+      { y: 100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.3, ease: "power3.out" },
+      "-=0.6",
+    );
 }
 
 animate();
