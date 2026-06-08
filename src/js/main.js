@@ -772,6 +772,12 @@ window.addEventListener(
     )
       return;
 
+    // если скроллим внутри combined-section — не перехватывать
+    const combinedSection = document.getElementById("combined-section");
+    if (combinedSection && combinedSection.contains(e.target)) {
+      return; // дать браузеру скроллить секцию нативно
+    }
+
     const rawDelta = e.deltaY * SCROLL_SENSITIVITY;
     const deltaProgress =
       Math.sign(rawDelta) * Math.min(Math.abs(rawDelta), 0.02);
@@ -966,13 +972,13 @@ function animate() {
   renderer.render(scene, camera);
 
   // =====================
-  // КОНТРОЛЬ ВИДИМОСТИ ARTISTE-СЕКЦИИ
+  // КОНТРОЛЬ ВИДИМОСТИ COMBINED-СЕКЦИИ
   // =====================
-  const artisteSection = document.getElementById("artiste-section");
+  const combinedSection = document.getElementById("combined-section");
   if (sectionVisible) {
-    artisteSection.classList.add("visible");
+    combinedSection.classList.add("visible");
   } else {
-    artisteSection.classList.remove("visible");
+    combinedSection.classList.remove("visible");
   }
 }
 

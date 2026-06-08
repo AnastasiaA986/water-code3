@@ -236,12 +236,11 @@ h4 {
   position: relative;
 }
 
-/* ── Artiste section (appears after scroll) ── */
-#artiste-section {
+/* ── Combined section (artiste + oceanix, scrollable) ── */
+#combined-section {
   position: fixed;
   inset: 0;
   z-index: 100;
-  min-height: 100vh;
   background: rgba(216, 234, 242, 0.6);
   box-sizing: border-box;
   opacity: 0;
@@ -254,7 +253,19 @@ h4 {
   -webkit-overflow-scrolling: touch;
 }
 
-.artiste-content {
+#combined-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.combined-page {
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.artiste-content,
+.oceanix-content {
   display: flex;
   flex-direction: row;
   width: 1050px;
@@ -267,7 +278,8 @@ h4 {
   margin-top: 150px;
 }
 
-.artiste-image {
+.artiste-image,
+.oceanix-image {
   width: 318px;
   height: 420px;
   border-radius: 5px;
@@ -279,7 +291,8 @@ h4 {
   width: 350px;
 }
 
-.artiste-propos {
+.artiste-propos,
+.oceanix-propos {
   display: flex;
   height: 420px;
   flex-direction: column;
@@ -298,19 +311,14 @@ h4 {
   align-self: stretch;
   border-left: 1px solid #2c5c72;
 }
-.artiste-biographie {
+.artiste-biographie,
+.oceanix-biographie {
   display: flex;
   height: 100%;
   flex-direction: column;
   align-items: flex-start;
   gap: 24px;
   flex: 1 0 0;
-}
-
-#artiste-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
 }
 
 a.button {
