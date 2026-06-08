@@ -1091,7 +1091,7 @@ function navigateTo(destination, onComplete) {
   const proxy = { value: targetProgress };
   gsap.to(proxy, {
     value: destination,
-    duration: 10,
+    duration: 3,
     ease: "power2.inOut",
     onUpdate: () => {
       targetProgress = proxy.value;

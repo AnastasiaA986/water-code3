@@ -684,7 +684,7 @@ p {
 }
 
 /* ── Ripple rings ── */
-.ripple-ring {
+/* .ripple-ring {
   position: absolute;
   width: 40px;
   height: 40px;
@@ -719,10 +719,10 @@ p {
     transform: translate(-50%, -50%) scale(2.1);
     opacity: 0;
   }
-}
+} */
 
 /* ── Star icon ── */
-.star {
+/* .star {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -734,21 +734,21 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 
-.star img {
+/* .star img {
   width: 28px;
   height: 28px;
-}
+} */
 
 /* ── Hover / Active ── */
-.ripple-btn:hover .star img {
+/* .ripple-btn:hover .star img {
   opacity: 0.85;
 }
 
 .ripple-btn:active .star {
   transform: translate(-50%, -50%) scale(0.95);
-}
+} */
 
 #loader {
   z-index: 9999;
@@ -840,11 +840,15 @@ p {
   justify-content: center;
   align-items: flex-end;
   gap: 20px;
-  width: 1512px;
-  height: 982px;
+  width: 92%;
+  height: 46%;
   border-radius: 5px;
-  opacity: 0.4;
-  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border: 1px solid #fff;
 }
 
 .modeles {
@@ -857,10 +861,10 @@ p {
   animation: scroll-carousel 20s linear infinite;
 }
 
-model-viewer {
-  width: 300px;
-  height: 400px;
-  flex-shrink: 0;
+.modeles-track img {
+  max-height: 450;
+  opacity: 1;
+  z-index: 999;
 }
 
 @keyframes scroll-carousel {
