@@ -986,7 +986,6 @@ function animate() {
   const combinedSection = document.getElementById("combined-section");
   if (sectionVisible) {
     combinedSection.classList.add("visible");
-    scrollInd.classList.remove("white");
 
     const tl = gsap.timeline(); // Déclaration de la timeline, enregistrée dans une variable "tl"
     tl.to(".artiste-image", { y: -100, opacity: 1, duration: 1 }); // Première animation ajoutée à la timeline
@@ -994,7 +993,6 @@ function animate() {
     tl.to(".propos-collection", { y: -100, opacity: 1, duration: 1 }); // Troisième animation ajoutée à la timeline
   } else {
     combinedSection.classList.remove("visible");
-    scrollInd.classList.add("white");
   }
 }
 
