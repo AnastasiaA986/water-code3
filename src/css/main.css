@@ -346,6 +346,24 @@ h5 {
 .combined-page {
   min-height: 100vh;
   box-sizing: border-box;
+  padding-bottom: 400px;
+}
+
+.section-blur-divider {
+  width: 100%;
+  height: 30%;
+  position: sticky;
+  top: 0%;
+  background: linear-gradient(
+    0deg,
+    rgba(227, 234, 235, 0) 0%,
+    rgba(208, 224, 232, 0.29) 21.25%,
+    rgba(198, 219, 231, 0.66) 45.57%,
+    rgba(198, 219, 231, 0.98) 76.92%
+  );
+  backdrop-filter: blur(1px);
+
+  z-index: 101;
 }
 
 .artiste-content,
@@ -372,12 +390,16 @@ h5 {
 }
 
 .artiste-image,
+.oceanix-image,
 .propos-collection,
-.artiste-biographie {
+.propos,
+.artiste-biographie,
+.oceanix-biographie {
   opacity: 0;
 }
 
-.artiste-biographie {
+.artiste-biographie,
+.oceanix-biographie {
   width: 350px;
 }
 
@@ -392,7 +414,8 @@ h5 {
   flex: 1 0 0;
 }
 
-.propos-collection {
+.propos-collection,
+.propos {
   display: flex;
   padding-left: 15px;
   justify-content: center;
@@ -444,10 +467,9 @@ h2 {
   letter-spacing: 43.2px;
   text-transform: uppercase;
   margin: 0;
-  padding-top: 100px;
   position: sticky;
-  top: 0;
-  z-index: 101;
+  top: 100px;
+  z-index: 103;
 }
 
 h3 {
