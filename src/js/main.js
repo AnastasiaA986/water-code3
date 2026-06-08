@@ -31,6 +31,10 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Water } from "three/examples/jsm/objects/Water.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 import island1Url from "../Ressources/Island.glb";
 import model3DUrl from "../Ressources/modele_3D_03.glb";
 import model3D2Url from "../Ressources/modele_3d_08.glb";
@@ -773,10 +777,6 @@ window.addEventListener(
       return;
 
     // если скроллим внутри combined-section — не перехватывать
-    const combinedSection = document.getElementById("combined-section");
-    if (combinedSection && combinedSection.contains(e.target)) {
-      return; // дать браузеру скроллить секцию нативно
-    }
 
     const rawDelta = e.deltaY * SCROLL_SENSITIVITY;
     const deltaProgress =
@@ -784,7 +784,13 @@ window.addEventListener(
     const willOpenSection =
       targetProgress >= SECTION_TRIGGER || scrollProgress >= SECTION_TRIGGER;
 
-    if (willOpenSection && deltaProgress > 0) {
+    const combinedSection = document.getElementById("combined-section");
+
+    if (
+      willOpenSection &&
+      deltaProgress > 0 &&
+      !combinedSection.contains(e.target)
+    ) {
       e.preventDefault();
       return;
     }
@@ -977,6 +983,10 @@ function animate() {
   const combinedSection = document.getElementById("combined-section");
   if (sectionVisible) {
     combinedSection.classList.add("visible");
+    const tl = gsap.timeline(); // Déclaration de la timeline, enregistrée dans une variable "tl"
+    tl.to(".artiste-image", { y: -100, opacity: 1, duration: 1 }); // Première animation ajoutée à la timeline
+    tl.to(".artiste-biographie", { y: -100, opacity: 1, duration: 1 }); // Seconde animation ajoutée à la timeline
+    tl.to(".propos-collection", { y: -100, opacity: 1, duration: 1 }); // Troisième animation ajoutée à la timeline
   } else {
     combinedSection.classList.remove("visible");
   }

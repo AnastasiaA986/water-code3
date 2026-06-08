@@ -297,7 +297,7 @@ h4 {
   gap: 48px;
   flex-wrap: wrap;
   margin: 0 auto;
-  margin-top: 150px;
+  margin-top: 250px;
 }
 
 .artiste-image,
@@ -307,6 +307,12 @@ h4 {
   border-radius: 5px;
 
   object-fit: cover;
+}
+
+.artiste-image,
+.propos-collection,
+.artiste-biographie {
+  opacity: 0;
 }
 
 .artiste-biographie {
@@ -343,26 +349,12 @@ h4 {
   flex: 1 0 0;
 }
 
-a.button {
+a {
   color: #2c5c72;
   text-transform: uppercase;
   text-decoration: none;
   padding: 0;
   margin: 0;
-}
-
-.button {
-  display: flex;
-  height: 50px;
-  padding: 14px 20px;
-  justify-content: center;
-  align-items: center;
-  gap: 13px;
-  flex-shrink: 0;
-  align-self: stretch;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
 }
 
 h2 {
@@ -391,6 +383,9 @@ h2 {
   text-transform: uppercase;
   margin: 0;
   padding-top: 100px;
+  position: sticky;
+  top: 0;
+  z-index: 101;
 }
 
 h3 {
