@@ -156,8 +156,6 @@ body.loading #loader-overlay {
   z-index: 100;
   min-height: 100vh;
   background: rgba(216, 234, 242, 0.6);
-
-  padding: 60px 40px;
   box-sizing: border-box;
   opacity: 0;
   transform: translateY(100%);
@@ -169,16 +167,85 @@ body.loading #loader-overlay {
   -webkit-overflow-scrolling: touch;
 }
 
+.artiste-content {
+  display: flex;
+  flex-direction: row;
+  width: 1050px;
+  height: 420px;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  margin-top: 150px;
+}
+
+.artiste-image {
+  width: 318px;
+  height: 420px;
+  border-radius: 5px;
+
+  object-fit: cover;
+}
+
+.artiste-biographie {
+  width: 350px;
+}
+
+.artiste-propos {
+  display: flex;
+  height: 420px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1 0 0;
+}
+
+.propos-collection {
+  display: flex;
+  padding-left: 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-left: 1px solid #2c5c72;
+}
+.artiste-biographie {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  flex: 1 0 0;
+}
+
 #artiste-section.visible {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
 
-.artiste-content {
-  max-width: 800px;
-  margin: 0 auto;
-  color: #fff;
+a.button {
+  color: #2c5c72;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+}
+
+.button {
+  display: flex;
+  height: 50px;
+  padding: 14px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  flex-shrink: 0;
+  align-self: stretch;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
 }
 
 h2 {
@@ -205,6 +272,8 @@ h2 {
   line-height: normal;
   letter-spacing: 43.2px;
   text-transform: uppercase;
+  margin: 0;
+  padding-top: 100px;
 }
 
 h3 {
@@ -231,6 +300,7 @@ h3 {
   line-height: normal;
   letter-spacing: 0.48px;
   text-transform: uppercase;
+  margin: 0;
 }
 
 p {
@@ -246,12 +316,7 @@ p {
   font-style: normal;
   font-weight: 300;
   line-height: 125%; /* 17.5px */
-}
-
-.propos-collection {
-  border-left: 1px solid #2c5c72;
-  display: flex;
-  padding-left: 15px;
+  margin: 0;
 }
 
 #sideMenu {
