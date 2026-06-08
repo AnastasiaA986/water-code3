@@ -314,12 +314,6 @@ h5 {
   pointer-events: none;
 }
 
-/* ── Page sections ── */
-.page-section {
-  width: 100%;
-  position: relative;
-}
-
 /* ── Combined section (artiste + oceanix, scrollable) ── */
 #combined-section {
   position: fixed;
@@ -468,7 +462,7 @@ h2 {
   text-transform: uppercase;
   margin: 0;
   position: sticky;
-  top: 100px;
+  top: 0px;
   z-index: 103;
 }
 
@@ -548,6 +542,8 @@ p {
   align-items: center;
   gap: 10px;
   position: relative;
+  cursor: pointer;
+  user-select: none;
 }
 
 .menu-icon {
@@ -576,39 +572,52 @@ p {
   text-transform: uppercase;
 }
 
-.menu-item:has(.label.active) .menu-icon .ripple-menu {
-  display: block;
-}
 .menu-icon .ripple-menu {
-  display: none;
   position: absolute;
   border-radius: 50%;
   border: 1px solid rgba(44, 92, 114, 0.55);
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
   pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.menu-item:has(.label.active) .menu-icon .ripple-menu {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .menu-icon .ripple-menu:nth-child(1) {
   width: 30px;
   height: 30px;
   border-color: rgba(44, 92, 114, 0.75);
+  transition-delay: 0s;
 }
 .menu-icon .ripple-menu:nth-child(2) {
   width: 36px;
   height: 36px;
   border-color: rgba(44, 92, 114, 0.52);
+  transition-delay: 0.07s;
 }
 .menu-icon .ripple-menu:nth-child(3) {
   width: 42px;
   height: 42px;
   border-color: rgba(44, 92, 114, 0.38);
+  transition-delay: 0.14s;
 }
 .menu-icon .ripple-menu:nth-child(4) {
   width: 48px;
   height: 48px;
   border-color: rgba(44, 92, 114, 0.23);
+  transition-delay: 0.21s;
+}
+
+.label {
+  transition: color 0.3s ease;
 }
 .label:hover {
   color: rgba(44, 92, 114, 0.6);

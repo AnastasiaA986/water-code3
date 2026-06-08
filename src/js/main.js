@@ -892,11 +892,12 @@ function animate() {
 
   // обновляем активное меню в зависимости от прогресса
   let activeIndex;
-  if (scrollProgress < 10)
-    activeIndex = 0; // Accueil для первых 4 островов
-  else if (scrollProgress < 10.5)
-    activeIndex = 1; // Collection для следующих 2
-  else activeIndex = 2;
+  if (scrollProgress < SECTION_TRIGGER) {
+    activeIndex = 0;
+  } else {
+    const cs = document.getElementById("combined-section");
+    activeIndex = cs.scrollTop >= window.innerHeight ? 2 : 1;
+  }
 
   // снимаем active со всех
   const menuItems = ["menu-collection", "menu-iris", "menu-oceanix"];
@@ -1079,3 +1080,50 @@ function runArtisteAnimation() {
 
 let prevSectionVisible = false;
 animate();
+
+// =====================
+// НАВИГАЦИЯ ПО МЕНЮ
+// =====================
+const combinedSectionEl = document.getElementById("combined-section");
+
+function navigateTo(destination, onComplete) {
+  gsap.killTweensOf({ targetProgress });
+  const proxy = { value: targetProgress };
+  gsap.to(proxy, {
+    value: destination,
+    duration: 10,
+    ease: "power2.inOut",
+    onUpdate: () => {
+      targetProgress = proxy.value;
+    },
+    onComplete,
+  });
+}
+
+document
+  .getElementById("menu-collection")
+  .closest(".menu-item")
+  .addEventListener("click", () => {
+    navigateTo(0);
+  });
+
+document
+  .getElementById("menu-iris")
+  .closest(".menu-item")
+  .addEventListener("click", () => {
+    navigateTo(MAX_PROGRESS, () => {
+      combinedSectionEl.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
+document
+  .getElementById("menu-oceanix")
+  .closest(".menu-item")
+  .addEventListener("click", () => {
+    navigateTo(MAX_PROGRESS, () => {
+      combinedSectionEl.scrollTo({
+        top: window.innerHeight,
+        behavior: "smooth",
+      });
+    });
+  });
