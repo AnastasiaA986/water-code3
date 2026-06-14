@@ -802,8 +802,8 @@ gsap
     scrollTrigger: {
       trigger: "#combined-section .combined-page:nth-of-type(2)",
       scroller: "#combined-section",
-      start: "top 20%",
-      end: "bottom 50%",
+      start: "top 0%",
+      end: "bottom 40%",
       toggleActions: "play none none reverse",
     },
   })
@@ -970,3 +970,24 @@ document
       });
     });
   });
+
+// =====================
+// HIDE MENU ON THIRD COMBINED-PAGE (intro-titres)
+// =====================
+const sideMenu = document.getElementById("sideMenu");
+
+combinedSectionEl.addEventListener(
+  "scroll",
+  () => {
+    const atThirdPage = combinedSectionEl.scrollTop >= window.innerHeight * 2;
+    sideMenu.classList.toggle("menu-hidden", atThirdPage);
+  },
+  { passive: true },
+);
+
+// =====================
+// КНОПКА «RETOUR À LA RÉALITÉ» — перезагрузка страницы
+// =====================
+document.getElementById("retour-btn").addEventListener("click", () => {
+  window.location.reload();
+});
