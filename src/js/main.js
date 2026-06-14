@@ -1079,7 +1079,79 @@ function runArtisteAnimation() {
 }
 
 let prevSectionVisible = false;
+
 animate();
+
+// =====================
+// БЕСКОНЕЧНАЯ КАРУСЕЛЬ МОДЕЛЕЙ
+// =====================
+
+const track = document.querySelector(".modeles-track");
+if (track) {
+  const items = Array.from(track.children); // оригинальные 8 img
+
+  // дублируем оригинальные элементы
+  items.forEach((item) => {
+    const clone = item.cloneNode(true);
+    track.appendChild(clone);
+  });
+
+  const allImgs = Array.from(track.querySelectorAll("img"));
+
+  Promise.all(
+    allImgs.map((img) =>
+      img.complete
+        ? Promise.resolve()
+        : new Promise((res) => img.addEventListener("load", res)),
+    ),
+  ).then(() => {
+    let x = 0;
+    const speed = 0.5;
+
+    // ✔️ правильный период = ширина оригинального набора + gap
+    const gap = 60;
+    const originalWidth = items.reduce((sum, img) => {
+      return sum + img.getBoundingClientRect().width + gap;
+    }, 0);
+
+    const period = originalWidth;
+
+    function animateCarousel() {
+      x -= speed;
+      track.style.transform = `translateX(${x}px)`;
+
+      // ✔️ бесшовный цикл без скачка
+      if (Math.abs(x) >= period) {
+        x += period;
+      }
+
+      // ✔️ центр экрана
+      const center = window.innerWidth / 2;
+
+      allImgs.forEach((img) => {
+        const r = img.getBoundingClientRect();
+        const imgCenter = r.left + r.width / 2;
+        const dist = Math.abs(center - imgCenter);
+
+        const maxDist = window.innerWidth / 2;
+
+        let t = 1 - dist / maxDist;
+        if (t < 0) t = 0;
+
+        const scale = 0.6 + t * 0.4; // 0.8 → 1.0
+
+        const opacity = 0.4 + t * 0.6; // 0.4 → 1.0
+
+        img.style.transform = `scale(${scale})`;
+        img.style.opacity = opacity;
+      });
+
+      requestAnimationFrame(animateCarousel);
+    }
+
+    animateCarousel();
+  });
+}
 
 // =====================
 // НАВИГАЦИЯ ПО МЕНЮ

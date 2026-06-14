@@ -833,15 +833,14 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 60px;
 }
 
 .modeles {
+  overflow: hidden;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  gap: 20px;
   width: 92%;
-  height: 46%;
   border-radius: 5px;
   background: linear-gradient(
     180deg,
@@ -851,27 +850,18 @@ p {
   border: 1px solid #fff;
 }
 
-.modeles {
-  overflow: hidden;
-}
-
 .modeles-track {
   display: flex;
-  gap: 20px;
-  animation: scroll-carousel 20s linear infinite;
+  width: max-content;
+  gap: 0;
 }
 
 .modeles-track img {
-  max-height: 450;
-  opacity: 1;
-  z-index: 999;
-}
-
-@keyframes scroll-carousel {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+  margin: 0 60px;
+  height: 450px;
+  width: auto;
+  transform-origin: center;
+  transition:
+    transform 0.2s linear,
+    opacity 0.2s linear;
 }
