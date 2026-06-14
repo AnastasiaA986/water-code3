@@ -50,153 +50,6 @@ import model3D8Url from "../Ressources/modele_3d_02.glb";
 import starBtnUrl from "../Ressources/star-bouton.svg";
 
 // =====================
-// ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ ВЕРХНЕЙ ТОЧКИ МОДЕЛИ
-// =====================
-function getTopPoint(object) {
-  const box = new THREE.Box3().setFromObject(object);
-  const center = box.getCenter(new THREE.Vector3());
-
-  return new THREE.Vector3(center.x, box.max.y, center.z);
-}
-
-// =====================
-// DONNÉES BOUTONS INFO
-// offset = décalage XYZ relatif au sommet du modèle (calculé automatiquement).
-//   X  : gauche(-) / droite(+)
-//   Y  : bas(-)   / haut(+)   — ajouter des unités pour monter le bouton
-//   Z  : devant(-) / derrière(+)
-// visibleMin/Max = plage de scrollProgress où le bouton est affiché.
-//   scrollProgress 0→11 correspond aux 12 waypoints de islandPositions.
-//   Île 1 ≈ 0–1.5 | Île 2 ≈ 1.5–3.5 | Île 3 ≈ 3.5–5.5
-//   Île 4 ≈ 5.5–7 | Île 5 ≈ 6.5–8   | Île 6 ≈ 7.5–9
-//   Île 7 ≈ 8.5–10 | Île 8 ≈ 9.5–11.5
-// =====================
-const MODELS_DATA = [
-  {
-    visibleMin: 0,
-    visibleMax: 1.5,
-    buttons: [
-      {
-        offset: new THREE.Vector3(0, 8, 0),
-        title: "Personnage 1 – Info A",
-        text: "Remplace ce texte par l'information que tu veux afficher pour le premier personnage.",
-      },
-      {
-        offset: new THREE.Vector3(4, 5, 0),
-        title: "Personnage 1 – Info B",
-        text: "Deuxième information pour le premier personnage.",
-      },
-    ],
-  },
-  {
-    visibleMin: 1.5,
-    visibleMax: 3.5,
-    buttons: [
-      {
-        offset: new THREE.Vector3(0, 8, 0),
-        title: "Personnage 2 – Info A",
-        text: "Information pour le deuxième personnage.",
-      },
-    ],
-  },
-  {
-    visibleMin: 3.5,
-    visibleMax: 5.5,
-    buttons: [
-      {
-        offset: new THREE.Vector3(0, 8, 0),
-        title: "Personnage 3 – Info A",
-        text: "Information pour le troisième personnage.",
-      },
-      {
-        offset: new THREE.Vector3(4, 5, 0),
-        title: "Personnage 3 – Info B",
-        text: "Deuxième information pour le troisième personnage.",
-      },
-    ],
-  },
-  {
-    visibleMin: 5.5,
-    visibleMax: 7,
-    buttons: [
-      {
-        offset: new THREE.Vector3(0, 8, 0),
-        title: "Personnage 4 – Info A",
-        text: "Information pour le quatrième personnage.",
-      },
-    ],
-  },
-  {
-    visibleMin: 6.5,
-    visibleMax: 8,
-    buttons: [
-      {
-        offset: new THREE.Vector3(0, 8, 0),
-        title: "Personnage 5 – Info A",
-        text: "Information pour le cinquième personnage.",
-      },
-    ],
-  },
-  {
-    visibleMin: 7.5,
-    visibleMax: 9,
-    buttons: [
-      {
-        offset: new THREE.Vector3(0, 8, 0),
-        title: "Personnage 6 – Info A",
-        text: "Information pour le sixième personnage.",
-      },
-    ],
-  },
-  {
-    visibleMin: 8.5,
-    visibleMax: 10,
-    buttons: [
-      {
-        offset: new THREE.Vector3(0, 8, 0),
-        title: "Personnage 7 – Info A",
-        text: "Information pour le septième personnage.",
-      },
-    ],
-  },
-  {
-    visibleMin: 9.5,
-    visibleMax: 11.5,
-    buttons: [
-      {
-        offset: new THREE.Vector3(0, 8, 0),
-        title: "Personnage 8 – Info A",
-        text: "Information pour le huitième personnage.",
-      },
-    ],
-  },
-];
-
-// =====================
-// CRÉATION DES BOUTONS DOM
-// =====================
-const buttonsContainer = document.getElementById("info-buttons");
-
-MODELS_DATA.forEach((model) => {
-  model.buttons.forEach((btn) => {
-    const el = document.createElement("button");
-    el.className = "ripple-btn";
-    el.innerHTML = `
-      <div class="ripple-ring"></div>
-      <div class="ripple-ring"></div>
-      <div class="ripple-ring"></div>
-      <div class="ripple-ring"></div>
-      <div class="star"><img src="${starBtnUrl}" alt="" /></div>
-    `;
-    el.style.opacity = "0";
-    el.style.pointerEvents = "none";
-    el.addEventListener("click", () => showOverlay(btn.title, btn.text));
-    buttonsContainer.appendChild(el);
-    btn.element = el;
-  });
-});
-
-// =====================
 // OVERLAY
 // =====================
 const overlay = document.getElementById("info-overlay");
@@ -428,12 +281,6 @@ loader.load(island1Url, (gltf) => {
 
     modelsGroup.add(obj);
     console.log("✅ modele_3D_01 загружен!");
-
-    // Привязка кнопок к верхней точке модели
-    const top1 = getTopPoint(obj);
-    MODELS_DATA[0].buttons.forEach((btn) => {
-      btn.anchor = top1.clone().add(btn.offset);
-    });
   });
 
   // =====================
@@ -497,13 +344,6 @@ loader.load(island1Url, (gltf) => {
 
     modelsGroup.add(obj2);
     console.log("✅ modele_3D_03 загружен!");
-
-    // Привязка кнопок к верхней точке модели
-    const top3 = getTopPoint(obj2);
-    MODELS_DATA[2].buttons.forEach((btn, i) => {
-      btn.anchor = top3.clone();
-      btn.anchor.y += 2 + i * 2; // аккуратно вверх
-    });
   });
 
   // =====================
@@ -532,13 +372,6 @@ loader.load(island1Url, (gltf) => {
 
     modelsGroup.add(obj2);
     console.log("✅ modele_3D_04 загружен!");
-
-    // Привязка кнопок к верхней точке модели
-    const top4 = getTopPoint(obj2);
-    MODELS_DATA[3].buttons.forEach((btn, i) => {
-      btn.anchor = top4.clone();
-      btn.anchor.y += 2 + i * 2; // аккуратно вверх
-    });
   });
 
   // =====================
@@ -567,13 +400,6 @@ loader.load(island1Url, (gltf) => {
 
     modelsGroup.add(obj2);
     console.log("✅ modele_3D_05 загружен!");
-
-    // Привязка кнопок к верхней точке модели
-    const top5 = getTopPoint(obj2);
-    MODELS_DATA[4].buttons.forEach((btn, i) => {
-      btn.anchor = top5.clone();
-      btn.anchor.y += 2 + i * 2; // аккуратно вверх
-    });
   });
 
   // =====================
@@ -602,13 +428,6 @@ loader.load(island1Url, (gltf) => {
 
     modelsGroup.add(obj2);
     console.log("✅ modele_3D_06 загружен!");
-
-    // Привязка кнопок к верхней точке модели
-    const top6 = getTopPoint(obj2);
-    MODELS_DATA[5].buttons.forEach((btn, i) => {
-      btn.anchor = top6.clone();
-      btn.anchor.y += 5 + i * 3;
-    });
   });
 
   // =====================
@@ -637,13 +456,6 @@ loader.load(island1Url, (gltf) => {
 
     modelsGroup.add(obj2);
     console.log("✅ modele_3D_07 загружен!");
-
-    // Привязка кнопок к верхней точке модели
-    const top7 = getTopPoint(obj2);
-    MODELS_DATA[6].buttons.forEach((btn, i) => {
-      btn.anchor = top7.clone();
-      btn.anchor.y += 5 + i * 3;
-    });
   });
 
   // =====================
@@ -672,13 +484,6 @@ loader.load(island1Url, (gltf) => {
 
     modelsGroup.add(obj2);
     console.log("✅ modele_3D_08 загружен!");
-
-    // Привязка кнопок к верхней точке модели
-    const top8 = getTopPoint(obj2);
-    MODELS_DATA[7].buttons.forEach((btn, i) => {
-      btn.anchor = top8.clone();
-      btn.anchor.y += 5 + i * 3;
-    });
   });
 });
 
@@ -777,6 +582,29 @@ scrollProgress = LAST_MODEL_INDEX;
 
 let sceneLocked = false;
 
+// =====================
+// ПРОСТЫЕ HTML-КНОПКИ
+// =====================
+const SIMPLE_BUTTONS = [
+  // Модель 1
+  { id: "btn-1a", min: 0.4, max: 1.2 },
+  { id: "btn-1b", min: 0.4, max: 1.2 },
+
+  // Модель 2
+  { id: "btn-2a", min: 2.05, max: 3.25 },
+  { id: "btn-2b", min: 2.05, max: 3.25 },
+];
+
+function updateSimpleButtons() {
+  SIMPLE_BUTTONS.forEach((b) => {
+    const el = document.getElementById(b.id);
+    const visible = scrollProgress >= b.min && scrollProgress <= b.max;
+
+    el.style.opacity = visible ? 1 : 0;
+    el.style.pointerEvents = visible ? "auto" : "none";
+  });
+}
+
 // скролл
 window.addEventListener(
   "wheel",
@@ -859,6 +687,8 @@ function animate() {
   // плавно догоняем скролл
   scrollProgress += (targetProgress - scrollProgress) * SCROLL_EASE;
 
+  console.log("scrollProgress:", scrollProgress.toFixed(2));
+
   // базовая позиция и lookAt по маршруту
   const cameraProgress = Math.min(scrollProgress, LOCKED_CAMERA_PROGRESS);
   const { pos, look } = getCameraState(cameraProgress);
@@ -910,66 +740,6 @@ function animate() {
   const activeEl = document.getElementById(menuItems[activeIndex]);
   if (activeEl) activeEl.classList.add("active");
 
-  // ── Mise à jour des boutons info (projection 3D → écran) ──
-  const screenVec = new THREE.Vector3();
-
-  MODELS_DATA.forEach((model) => {
-    const center = (model.visibleMin + model.visibleMax) / 2;
-    const halfRange = (model.visibleMax - model.visibleMin) / 2;
-    const dist = Math.abs(scrollProgress - center);
-    const opacity = Math.max(0, 1 - dist / halfRange);
-
-    model.buttons.forEach((btn) => {
-      // кнопка создана?
-      if (!btn.element) return;
-
-      // модель ещё не загрузилась → anchor нет
-      if (!btn.anchor) {
-        btn.element.style.opacity = 0;
-        btn.element.style.pointerEvents = "none";
-        return;
-      }
-
-      // проверка: точка за камерой?
-      const camDir = new THREE.Vector3();
-      camera.getWorldDirection(camDir);
-
-      const toPoint = new THREE.Vector3().subVectors(
-        btn.anchor,
-        camera.position,
-      );
-
-      if (camDir.dot(toPoint) < 0) {
-        btn.element.style.opacity = 0;
-        btn.element.style.pointerEvents = "none";
-        return;
-      }
-
-      // проекция 3D → экран
-      screenVec.copy(btn.anchor).project(camera);
-
-      const x = (screenVec.x * 0.5 + 0.5) * window.innerWidth;
-      const y = THREE.MathUtils.clamp(
-        (-screenVec.y * 0.5 + 0.5) * window.innerHeight,
-        40,
-        window.innerHeight - 40,
-      );
-
-      // сглаживание
-      if (!btn.screenPos) btn.screenPos = { x, y };
-
-      btn.screenPos.x += (x - btn.screenPos.x) * 0.1;
-      btn.screenPos.y += (y - btn.screenPos.y) * 0.1;
-
-      btn.element.style.left = Math.round(btn.screenPos.x) + "px";
-      btn.element.style.top = Math.round(btn.screenPos.y) + "px";
-
-      btn.element.style.opacity = screenVec.z < 1 ? opacity : 0;
-      btn.element.style.pointerEvents =
-        opacity > 0.3 && screenVec.z < 1 ? "auto" : "none";
-    });
-  });
-
   // ── Плавное появление моделей ──
   if (modelsIntroActive) {
     modelsIntroProgress = Math.min(1, modelsIntroProgress + 0.02);
@@ -990,6 +760,7 @@ function animate() {
       modelsIntroActive = false;
     }
   }
+  updateSimpleButtons();
 
   renderer.render(scene, camera);
 
