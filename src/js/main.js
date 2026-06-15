@@ -126,11 +126,115 @@ document.querySelectorAll(".ripple-btn").forEach((btn) => {
         break;
 
       case "btn-2a":
-        showOverlay("Модель 2 — A", "Текст для кнопки 2A.", btn);
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
         break;
 
       case "btn-2b":
-        showOverlay("Модель 2 — B", "Текст для кнопки 2B.", btn);
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-3a":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-3b":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-4a":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-4b":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-5a":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-5b":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-6a":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-6b":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-7a":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-7b":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-8a":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-8b":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
         break;
     }
   });
@@ -720,12 +824,36 @@ let sceneLocked = false;
 // =====================
 const SIMPLE_BUTTONS = [
   // Модель 1
-  { id: "btn-1a", min: 0.4, max: 1.2 },
-  { id: "btn-1b", min: 0.4, max: 1.2 },
+  { id: "btn-1a", min: 0.3, max: 1.1 },
+  { id: "btn-1b", min: 0.3, max: 1.1 },
 
   // Модель 2
-  { id: "btn-2a", min: 2.05, max: 3.25 },
-  { id: "btn-2b", min: 2.05, max: 3.25 },
+  { id: "btn-2a", min: 1.9, max: 3 },
+  { id: "btn-2b", min: 1.9, max: 3 },
+
+  // Модель 3
+  { id: "btn-3a", min: 4, max: 5 },
+  { id: "btn-3b", min: 4, max: 5 },
+
+  // Модель 4
+  { id: "btn-4a", min: 6.5, max: 7 },
+  { id: "btn-4b", min: 5.95, max: 6.3 },
+
+  // Модель 5
+  { id: "btn-5a", min: 7.9, max: 8.95 },
+  { id: "btn-5b", min: 7.9, max: 8.95 },
+
+  // Модель 6
+  { id: "btn-6a", min: 9.95, max: 10.35 },
+  { id: "btn-6b", min: 9.95, max: 10.35 },
+
+  // Модель 7
+  { id: "btn-7a", min: 11.95, max: 12.9 },
+  { id: "btn-7b", min: 11.95, max: 12.9 },
+
+  // Модель 8
+  { id: "btn-8a", min: 13.9, max: 14.2 },
+  { id: "btn-8b", min: 13.9, max: 14.2 },
 ];
 
 function updateSimpleButtons() {

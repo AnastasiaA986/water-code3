@@ -716,12 +716,66 @@ p {
 }
 
 #btn-2a {
-  top: 60%;
-  left: 62%;
+  top: 42%;
+  left: 43%;
 }
 #btn-2b {
-  top: 67%;
-  left: 64%;
+  top: 10%;
+  left: 54.5%;
+}
+
+#btn-3a {
+  top: 48%;
+  left: 44%;
+}
+#btn-3b {
+  top: 30%;
+  left: 58%;
+}
+
+#btn-4a {
+  top: 42%;
+  left: 55%;
+}
+#btn-4b {
+  top: 34%;
+  left: 43%;
+}
+
+#btn-5a {
+  top: 42%;
+  left: 55%;
+}
+#btn-5b {
+  top: 34%;
+  left: 43%;
+}
+
+#btn-6a {
+  top: 48%;
+  left: 55%;
+}
+#btn-6b {
+  top: 14%;
+  left: 43%;
+}
+
+#btn-7a {
+  top: 48%;
+  left: 55%;
+}
+#btn-7b {
+  top: 14%;
+  left: 43%;
+}
+
+#btn-8a {
+  top: 48%;
+  left: 45%;
+}
+#btn-8b {
+  top: 16%;
+  left: 54%;
 }
 
 /* ── Ripple rings ── */
@@ -898,8 +952,12 @@ p {
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(calc(-100% / var(--marquee-sets, 2))); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% / var(--marquee-sets, 2)));
+  }
 }
 
 .modeles-track img {
