@@ -27,9 +27,11 @@ body {
   pointer-events: auto;
 }
 
-#sideMenu.menu-hidden {
+#sideMenu.menu-hidden,
+#scroll-indicator.menu-hidden {
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.1s ease;
 }
 
 #canvas-container,
@@ -288,6 +290,7 @@ h5 {
   align-items: center;
   right: 3%;
   bottom: 4%;
+  z-index: 150;
 }
 
 #scroll-indicator img:first-child {
@@ -299,6 +302,11 @@ h5 {
 #scroll-indicator img:last-child {
   position: absolute; /* стрелка поверх */
   z-index: 2;
+}
+
+#scroll-indicator.light-bg img {
+  filter: invert(1);
+  transition: filter 0.3s ease;
 }
 
 @keyframes spin {

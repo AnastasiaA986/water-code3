@@ -1017,10 +1017,10 @@ function animate() {
     prevSectionVisible = sectionVisible;
     if (sectionVisible) {
       sectionTl.play();
-      scrollImgs.forEach((img) => (img.src = img.dataset.light));
+      scrollInd.classList.add("light-bg");
     } else {
       sectionTl.reverse();
-      scrollImgs.forEach((img) => (img.src = img.dataset.dark));
+      scrollInd.classList.remove("light-bg");
     }
   }
 
@@ -1187,6 +1187,7 @@ combinedSectionEl.addEventListener(
   () => {
     const atThirdPage = combinedSectionEl.scrollTop >= window.innerHeight * 2;
     sideMenu.classList.toggle("menu-hidden", atThirdPage);
+    scrollInd.classList.toggle("menu-hidden", atThirdPage);
   },
   { passive: true },
 );
