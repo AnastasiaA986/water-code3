@@ -493,11 +493,13 @@ loader.load(island1Url, (gltf) => {
 // НАВИГАЦИЯ ПО ОСТРОВАМ
 // =====================
 const islandPositions = [
-  { x: 0, y: 0, z: 120, lookAt: new THREE.Vector3(0, 0, 0), rotation: 0.04 },
+  // модель 1
+  { x: 0, y: -7, z: 120, lookAt: new THREE.Vector3(0, 0, 0), rotation: 0.04 },
   { x: 0, y: 5, z: 80, lookAt: new THREE.Vector3(0, 0, 0), rotation: -0.04 },
+  // модель 2
   {
     x: 120,
-    y: 15,
+    y: 10,
     z: -270,
     lookAt: new THREE.Vector3(120, 0, -350),
     rotation: 0.05,
@@ -509,6 +511,7 @@ const islandPositions = [
     lookAt: new THREE.Vector3(120, 0, -350),
     rotation: -0.05,
   },
+  // модель 3
   {
     x: -180,
     y: 5,
@@ -523,13 +526,39 @@ const islandPositions = [
     lookAt: new THREE.Vector3(-180, 0, -600),
     rotation: -0.05,
   },
+  // модель 4
   {
     x: 80,
-    y: 10,
+    y: 5,
     z: -820,
     lookAt: new THREE.Vector3(80, 0, -900),
     rotation: 0.04,
   },
+  {
+    x: 140,
+    y: -5,
+    z: -960,
+    lookAt: new THREE.Vector3(80, 0, -900),
+    rotation: 0.04,
+  },
+
+  // модель 6
+  {
+    x: 200,
+    y: 7,
+    z: -1420,
+    lookAt: new THREE.Vector3(200, 0, -1500),
+    rotation: 0.04,
+  },
+  {
+    x: 160,
+    y: 0,
+    z: -1420,
+    lookAt: new THREE.Vector3(200, 0, -1500),
+    rotation: 0.04,
+  },
+
+  // модель 5
   {
     x: -120,
     y: 5,
@@ -538,26 +567,36 @@ const islandPositions = [
     rotation: -0.04,
   },
   {
-    x: 200,
-    y: 10,
-    z: -1420,
-    lookAt: new THREE.Vector3(200, 0, -1500),
-    rotation: 0.04,
+    x: -95,
+    y: -3,
+    z: -1080,
+    lookAt: new THREE.Vector3(-120, 0, -1200),
+    rotation: -0.04,
   },
+
+  // модель 7
   {
     x: -200,
-    y: 15,
+    y: 10,
     z: -1720,
     lookAt: new THREE.Vector3(-200, 0, -1800),
     rotation: -0.04,
   },
+  {
+    x: -300,
+    y: 0,
+    z: -1770,
+    lookAt: new THREE.Vector3(-200, 0, -1800),
+    rotation: -0.04,
+  },
+  // модель 8
   {
     x: 150,
     y: 5,
     z: -2020,
     lookAt: new THREE.Vector3(150, 0, -2100),
     rotation: 0.04,
-  },
+  }, // на скроль
   {
     x: 130,
     y: -5,
@@ -570,14 +609,26 @@ const islandPositions = [
 let scrollProgress = 0;
 let targetProgress = 0;
 
+// =====================
+// ПАРАЛЛАКС МЫШИ
+// =====================
+let mouseTargetX = 0;
+let mouseSmoothX = 0;
+const MOUSE_LATERAL_STRENGTH = 10; // максимальное боковое смещение камеры (единицы)
+const MOUSE_EASE = 0.05; // плавность следования (0.01 = очень плавно, 0.1 = быстро)
+
+window.addEventListener("mousemove", (e) => {
+  mouseTargetX = (e.clientX / window.innerWidth - 0.5) * 2; // -1 … +1
+});
+
 const SCROLL_SENSITIVITY = 0.0075; // уменьшенная чувствительность, чтобы не было резких рывков
 const SCROLL_EASE = 0.06; // более мягкое сглаживание прогресса
 
-const LAST_MODEL_INDEX = 10;
+const LAST_MODEL_INDEX = 15;
 const LAST_MODEL_OVERSHOOT = 2; // насколько дальше последней модели можно прокрутить (для более плавного перехода к открытию секции)
 const LOCKED_CAMERA_PROGRESS = LAST_MODEL_INDEX + LAST_MODEL_OVERSHOOT;
-const SECTION_TRIGGER = 10.75; // прогресс, при котором открывается последняя секция с моделью 8 (можно изменить для более раннего или позднего открытия)
-const MAX_PROGRESS = 11;
+const SECTION_TRIGGER = 14.75; // прогресс, при котором открывается последняя секция с моделью 8 (можно изменить для более раннего или позднего открытия)
+const MAX_PROGRESS = 15;
 scrollProgress = LAST_MODEL_INDEX;
 
 let sceneLocked = false;
@@ -698,24 +749,14 @@ function animate() {
   sceneLocked = scrollProgress >= LOCKED_CAMERA_PROGRESS;
   controls.enabled = !sceneLocked;
 
-  // применяем смещение от мыши (±10°)
-  const offsetX = 0;
-  const offsetY = 0;
+  // плавно тянем боковое смещение к позиции мыши
+  mouseSmoothX += (mouseTargetX - mouseSmoothX) * MOUSE_EASE;
+  pos.x += mouseSmoothX * MOUSE_LATERAL_STRENGTH;
 
   // направление взгляда
   const direction = new THREE.Vector3().subVectors(look, pos).normalize();
 
-  // поворачиваем направление на угол мыши
-  const quaternion = new THREE.Quaternion();
-  const up = new THREE.Vector3(0, 1, 0);
-  const right = new THREE.Vector3().crossVectors(direction, up).normalize();
-
-  const qH = new THREE.Quaternion().setFromAxisAngle(up, -offsetX);
-  const qV = new THREE.Quaternion().setFromAxisAngle(right, offsetY);
-  quaternion.multiplyQuaternions(qH, qV);
-
-  const finalLook = direction.clone().applyQuaternion(quaternion);
-  const finalLookAt = pos.clone().add(finalLook);
+  const finalLookAt = pos.clone().add(direction);
 
   camera.position.copy(pos);
   camera.lookAt(finalLookAt);
