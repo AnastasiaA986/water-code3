@@ -55,9 +55,8 @@ import starBtnUrl from "../Ressources/star-bouton.svg";
 const overlay = document.getElementById("info-overlay");
 const overlayTitle = document.getElementById("overlay-title");
 const overlayText = document.getElementById("overlay-text");
-document.getElementById("overlay-close").addEventListener("click", () => {
-  overlay.classList.remove("visible");
-});
+
+let activeBtn = null;
 
 const scrollInd = document.getElementById("scroll-indicator");
 const scrollImgs = scrollInd.querySelectorAll("img");
@@ -66,11 +65,94 @@ const mainLogo = document.getElementById("main-logo");
 const sectionTl = gsap.timeline({ paused: true });
 sectionTl.to(mainLogo, { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 0);
 
-function showOverlay(title, text) {
+function positionOverlay(btn) {
+  const overlay = document.getElementById("info-overlay");
+  const rect = btn.getBoundingClientRect();
+
+  const offsetX = -299; // сдвиг по горизонтали (+ вправо, - влево)
+  const offsetY = 25; // сдвиг по вертикали (+ вниз, - вверх)
+
+  overlay.style.top = rect.top + offsetY + "px";
+  overlay.style.left = rect.left + offsetX + "px";
+}
+
+function showOverlay(title, text, btn) {
+  const overlay = document.getElementById("info-overlay");
+  const overlayTitle = document.getElementById("overlay-title");
+  const overlayText = document.getElementById("overlay-text");
+
   overlayTitle.textContent = title;
   overlayText.textContent = text;
+
+  activeBtn = btn;
+  positionOverlay(btn);
+
   overlay.classList.add("visible");
 }
+
+// =====================
+// КЛИКИ ПО КНОПКАМ (открытие/закрытие overlay)
+// =====================
+
+document.querySelectorAll(".ripple-btn").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation(); // чтобы клик по кнопке не считался кликом "вне overlay"
+
+    const overlay = document.getElementById("info-overlay");
+
+    // Если overlay уже открыт → закрываем
+    if (overlay.classList.contains("visible")) {
+      overlay.classList.remove("visible");
+      activeBtn = null;
+      return;
+    }
+
+    // Иначе открываем с нужным текстом
+    switch (btn.id) {
+      case "btn-1a":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-1b":
+        showOverlay(
+          "Pétales polymères adaptatifs",
+          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          btn,
+        );
+        break;
+
+      case "btn-2a":
+        showOverlay("Модель 2 — A", "Текст для кнопки 2A.", btn);
+        break;
+
+      case "btn-2b":
+        showOverlay("Модель 2 — B", "Текст для кнопки 2B.", btn);
+        break;
+    }
+  });
+});
+
+// =====================
+// ЗАКРЫТИЕ OVERLAY ПРИ КЛИКЕ ВНЕ ОКНА
+// =====================
+
+document.addEventListener("click", (e) => {
+  const overlay = document.getElementById("info-overlay");
+
+  // если overlay закрыт — ничего не делаем
+  if (!overlay.classList.contains("visible")) return;
+
+  // если клик внутри overlay — не закрываем
+  if (overlay.contains(e.target)) return;
+
+  // иначе закрываем
+  overlay.classList.remove("visible");
+  activeBtn = null;
+});
 
 // =====================
 // НАСТРОЙКИ
@@ -674,6 +756,13 @@ window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+window.addEventListener("resize", () => {
+  const overlay = document.getElementById("info-overlay");
+  if (overlay.classList.contains("visible") && activeBtn) {
+    positionOverlay(activeBtn);
+  }
 });
 
 // =====================
