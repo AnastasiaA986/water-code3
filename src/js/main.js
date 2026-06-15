@@ -624,7 +624,7 @@ window.addEventListener("mousemove", (e) => {
 const SCROLL_SENSITIVITY = 0.0075; // уменьшенная чувствительность, чтобы не было резких рывков
 const SCROLL_EASE = 0.06; // более мягкое сглаживание прогресса
 
-const LAST_MODEL_INDEX = 15;
+const LAST_MODEL_INDEX = 14.8;
 const LAST_MODEL_OVERSHOOT = 2; // насколько дальше последней модели можно прокрутить (для более плавного перехода к открытию секции)
 const LOCKED_CAMERA_PROGRESS = LAST_MODEL_INDEX + LAST_MODEL_OVERSHOOT;
 const SECTION_TRIGGER = 14.75; // прогресс, при котором открывается последняя секция с моделью 8 (можно изменить для более раннего или позднего открытия)
@@ -900,69 +900,31 @@ animate();
 
 const track = document.querySelector(".modeles-track");
 if (track) {
-  const items = Array.from(track.children); // оригинальные 8 img
+  const TOTAL_SETS = 4; // 1 оригинал + 3 клона — нет пробелов при любой ширине экрана
+  const originals = Array.from(track.children);
 
-  // дублируем оригинальные элементы
-  items.forEach((item) => {
-    const clone = item.cloneNode(true);
-    track.appendChild(clone);
-  });
+  for (let i = 0; i < TOTAL_SETS - 1; i++) {
+    originals.forEach((item) => track.appendChild(item.cloneNode(true)));
+  }
+
+  // Передаём количество наборов в CSS чтобы анимация двигалась ровно на 1 набор
+  track.style.setProperty("--marquee-sets", TOTAL_SETS);
 
   const allImgs = Array.from(track.querySelectorAll("img"));
 
-  Promise.all(
-    allImgs.map((img) =>
-      img.complete
-        ? Promise.resolve()
-        : new Promise((res) => img.addEventListener("load", res)),
-    ),
-  ).then(() => {
-    let x = 0;
-    const speed = 0.5;
+  function animateCarousel() {
+    const c = window.innerWidth / 2;
+    allImgs.forEach((img) => {
+      const r = img.getBoundingClientRect();
+      const dist = Math.abs(c - (r.left + r.width / 2));
+      const t = Math.max(0, 1 - dist / (window.innerWidth / 2));
+      img.style.transform = `scale(${0.6 + t * 0.4})`;
+      img.style.opacity = 0.4 + t * 0.6;
+    });
+    requestAnimationFrame(animateCarousel);
+  }
 
-    // ✔️ правильный период = ширина оригинального набора + gap
-    const gap = 60;
-    const originalWidth = items.reduce((sum, img) => {
-      return sum + img.getBoundingClientRect().width + gap;
-    }, 0);
-
-    const period = originalWidth;
-
-    function animateCarousel() {
-      x -= speed;
-      track.style.transform = `translateX(${x}px)`;
-
-      // ✔️ бесшовный цикл без скачка
-      if (Math.abs(x) >= period) {
-        x += period;
-      }
-
-      // ✔️ центр экрана
-      const center = window.innerWidth / 2;
-
-      allImgs.forEach((img) => {
-        const r = img.getBoundingClientRect();
-        const imgCenter = r.left + r.width / 2;
-        const dist = Math.abs(center - imgCenter);
-
-        const maxDist = window.innerWidth / 2;
-
-        let t = 1 - dist / maxDist;
-        if (t < 0) t = 0;
-
-        const scale = 0.6 + t * 0.4; // 0.8 → 1.0
-
-        const opacity = 0.4 + t * 0.6; // 0.4 → 1.0
-
-        img.style.transform = `scale(${scale})`;
-        img.style.opacity = opacity;
-      });
-
-      requestAnimationFrame(animateCarousel);
-    }
-
-    animateCarousel();
-  });
+  animateCarousel();
 }
 
 // =====================

@@ -322,6 +322,7 @@ h5 {
 /* ── Combined section (artiste + oceanix, scrollable) ── */
 #combined-section {
   position: fixed;
+  margin: 0;
   inset: 0;
   z-index: 100;
   background: rgba(216, 234, 242, 0.6);
@@ -346,6 +347,13 @@ h5 {
   min-height: 100vh;
   box-sizing: border-box;
   padding-bottom: 400px;
+}
+
+.combined-page-bottom {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: 50px;
+  padding-bottom: 0px;
 }
 
 .section-blur-divider {
@@ -378,7 +386,7 @@ h5 {
   gap: 48px;
   flex-wrap: wrap;
   margin: 0 auto;
-  margin-top: 120px;
+  margin-top: 140px;
 }
 
 .artiste-image,
@@ -875,7 +883,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 60px;
+  gap: 80px;
 }
 
 .modeles {
@@ -896,6 +904,12 @@ p {
   display: flex;
   width: max-content;
   gap: 0;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-100% / var(--marquee-sets, 2))); }
 }
 
 .modeles-track img {
@@ -903,9 +917,6 @@ p {
   height: 430px;
   width: auto;
   transform-origin: center;
-  transition:
-    transform 0.2s linear,
-    opacity 0.2s linear;
 }
 
 .intro-titres {
