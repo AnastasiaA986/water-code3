@@ -31,7 +31,7 @@ body {
 #scroll-indicator.menu-hidden {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.1s ease;
+  transition: opacity 0.3s ease;
 }
 
 #canvas-container,
@@ -377,10 +377,16 @@ h5 {
     rgba(198, 219, 231, 0.98) 76.92%
   );
   backdrop-filter: blur(1px);
-
   z-index: 101;
   pointer-events: none;
   margin-bottom: -10%;
+  opacity: 0;
+  transition: opacity 0s ease;
+}
+
+#combined-section.visible .section-blur-divider {
+  opacity: 1;
+  transition: opacity 1s ease 1s;
 }
 
 .artiste-content,
