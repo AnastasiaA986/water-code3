@@ -575,11 +575,13 @@ loader.load(island1Url, (gltf) => {
 // НАВИГАЦИЯ ПО ОСТРОВАМ
 // =====================
 const islandPositions = [
-  { x: 0, y: 0, z: 120, lookAt: new THREE.Vector3(0, 0, 0), rotation: 0.04 },
+  // модель 1
+  { x: 0, y: -7, z: 120, lookAt: new THREE.Vector3(0, 0, 0), rotation: 0.04 },
   { x: 0, y: 5, z: 80, lookAt: new THREE.Vector3(0, 0, 0), rotation: -0.04 },
+  // модель 2
   {
     x: 120,
-    y: 15,
+    y: 10,
     z: -270,
     lookAt: new THREE.Vector3(120, 0, -350),
     rotation: 0.05,
@@ -591,6 +593,7 @@ const islandPositions = [
     lookAt: new THREE.Vector3(120, 0, -350),
     rotation: -0.05,
   },
+  // модель 3
   {
     x: -180,
     y: 5,
@@ -605,13 +608,39 @@ const islandPositions = [
     lookAt: new THREE.Vector3(-180, 0, -600),
     rotation: -0.05,
   },
+  // модель 4
   {
     x: 80,
-    y: 10,
+    y: 5,
     z: -820,
     lookAt: new THREE.Vector3(80, 0, -900),
     rotation: 0.04,
   },
+  {
+    x: 140,
+    y: -5,
+    z: -960,
+    lookAt: new THREE.Vector3(80, 0, -900),
+    rotation: 0.04,
+  },
+
+  // модель 6
+  {
+    x: 200,
+    y: 7,
+    z: -1420,
+    lookAt: new THREE.Vector3(200, 0, -1500),
+    rotation: 0.04,
+  },
+  {
+    x: 160,
+    y: 0,
+    z: -1420,
+    lookAt: new THREE.Vector3(200, 0, -1500),
+    rotation: 0.04,
+  },
+
+  // модель 5
   {
     x: -120,
     y: 5,
@@ -620,26 +649,36 @@ const islandPositions = [
     rotation: -0.04,
   },
   {
-    x: 200,
-    y: 10,
-    z: -1420,
-    lookAt: new THREE.Vector3(200, 0, -1500),
-    rotation: 0.04,
+    x: -95,
+    y: -3,
+    z: -1080,
+    lookAt: new THREE.Vector3(-120, 0, -1200),
+    rotation: -0.04,
   },
+
+  // модель 7
   {
     x: -200,
-    y: 15,
+    y: 10,
     z: -1720,
     lookAt: new THREE.Vector3(-200, 0, -1800),
     rotation: -0.04,
   },
+  {
+    x: -300,
+    y: 0,
+    z: -1770,
+    lookAt: new THREE.Vector3(-200, 0, -1800),
+    rotation: -0.04,
+  },
+  // модель 8
   {
     x: 150,
     y: 5,
     z: -2020,
     lookAt: new THREE.Vector3(150, 0, -2100),
     rotation: 0.04,
-  },
+  }, // на скроль
   {
     x: 130,
     y: -5,
@@ -652,14 +691,26 @@ const islandPositions = [
 let scrollProgress = 0;
 let targetProgress = 0;
 
+// =====================
+// ПАРАЛЛАКС МЫШИ
+// =====================
+let mouseTargetX = 0;
+let mouseSmoothX = 0;
+const MOUSE_LATERAL_STRENGTH = 10; // максимальное боковое смещение камеры (единицы)
+const MOUSE_EASE = 0.05; // плавность следования (0.01 = очень плавно, 0.1 = быстро)
+
+window.addEventListener("mousemove", (e) => {
+  mouseTargetX = (e.clientX / window.innerWidth - 0.5) * 2; // -1 … +1
+});
+
 const SCROLL_SENSITIVITY = 0.0075; // уменьшенная чувствительность, чтобы не было резких рывков
 const SCROLL_EASE = 0.06; // более мягкое сглаживание прогресса
 
-const LAST_MODEL_INDEX = 10;
+const LAST_MODEL_INDEX = 14.8;
 const LAST_MODEL_OVERSHOOT = 2; // насколько дальше последней модели можно прокрутить (для более плавного перехода к открытию секции)
 const LOCKED_CAMERA_PROGRESS = LAST_MODEL_INDEX + LAST_MODEL_OVERSHOOT;
-const SECTION_TRIGGER = 10.75; // прогресс, при котором открывается последняя секция с моделью 8 (можно изменить для более раннего или позднего открытия)
-const MAX_PROGRESS = 11;
+const SECTION_TRIGGER = 14.75; // прогресс, при котором открывается последняя секция с моделью 8 (можно изменить для более раннего или позднего открытия)
+const MAX_PROGRESS = 15;
 scrollProgress = LAST_MODEL_INDEX;
 
 let sceneLocked = false;
@@ -787,24 +838,14 @@ function animate() {
   sceneLocked = scrollProgress >= LOCKED_CAMERA_PROGRESS;
   controls.enabled = !sceneLocked;
 
-  // применяем смещение от мыши (±10°)
-  const offsetX = 0;
-  const offsetY = 0;
+  // плавно тянем боковое смещение к позиции мыши
+  mouseSmoothX += (mouseTargetX - mouseSmoothX) * MOUSE_EASE;
+  pos.x += mouseSmoothX * MOUSE_LATERAL_STRENGTH;
 
   // направление взгляда
   const direction = new THREE.Vector3().subVectors(look, pos).normalize();
 
-  // поворачиваем направление на угол мыши
-  const quaternion = new THREE.Quaternion();
-  const up = new THREE.Vector3(0, 1, 0);
-  const right = new THREE.Vector3().crossVectors(direction, up).normalize();
-
-  const qH = new THREE.Quaternion().setFromAxisAngle(up, -offsetX);
-  const qV = new THREE.Quaternion().setFromAxisAngle(right, offsetY);
-  quaternion.multiplyQuaternions(qH, qV);
-
-  const finalLook = direction.clone().applyQuaternion(quaternion);
-  const finalLookAt = pos.clone().add(finalLook);
+  const finalLookAt = pos.clone().add(direction);
 
   camera.position.copy(pos);
   camera.lookAt(finalLookAt);
@@ -948,69 +989,31 @@ animate();
 
 const track = document.querySelector(".modeles-track");
 if (track) {
-  const items = Array.from(track.children); // оригинальные 8 img
+  const TOTAL_SETS = 4; // 1 оригинал + 3 клона — нет пробелов при любой ширине экрана
+  const originals = Array.from(track.children);
 
-  // дублируем оригинальные элементы
-  items.forEach((item) => {
-    const clone = item.cloneNode(true);
-    track.appendChild(clone);
-  });
+  for (let i = 0; i < TOTAL_SETS - 1; i++) {
+    originals.forEach((item) => track.appendChild(item.cloneNode(true)));
+  }
+
+  // Передаём количество наборов в CSS чтобы анимация двигалась ровно на 1 набор
+  track.style.setProperty("--marquee-sets", TOTAL_SETS);
 
   const allImgs = Array.from(track.querySelectorAll("img"));
 
-  Promise.all(
-    allImgs.map((img) =>
-      img.complete
-        ? Promise.resolve()
-        : new Promise((res) => img.addEventListener("load", res)),
-    ),
-  ).then(() => {
-    let x = 0;
-    const speed = 0.5;
+  function animateCarousel() {
+    const c = window.innerWidth / 2;
+    allImgs.forEach((img) => {
+      const r = img.getBoundingClientRect();
+      const dist = Math.abs(c - (r.left + r.width / 2));
+      const t = Math.max(0, 1 - dist / (window.innerWidth / 2));
+      img.style.transform = `scale(${0.6 + t * 0.4})`;
+      img.style.opacity = 0.4 + t * 0.6;
+    });
+    requestAnimationFrame(animateCarousel);
+  }
 
-    // ✔️ правильный период = ширина оригинального набора + gap
-    const gap = 60;
-    const originalWidth = items.reduce((sum, img) => {
-      return sum + img.getBoundingClientRect().width + gap;
-    }, 0);
-
-    const period = originalWidth;
-
-    function animateCarousel() {
-      x -= speed;
-      track.style.transform = `translateX(${x}px)`;
-
-      // ✔️ бесшовный цикл без скачка
-      if (Math.abs(x) >= period) {
-        x += period;
-      }
-
-      // ✔️ центр экрана
-      const center = window.innerWidth / 2;
-
-      allImgs.forEach((img) => {
-        const r = img.getBoundingClientRect();
-        const imgCenter = r.left + r.width / 2;
-        const dist = Math.abs(center - imgCenter);
-
-        const maxDist = window.innerWidth / 2;
-
-        let t = 1 - dist / maxDist;
-        if (t < 0) t = 0;
-
-        const scale = 0.6 + t * 0.4; // 0.8 → 1.0
-
-        const opacity = 0.4 + t * 0.6; // 0.4 → 1.0
-
-        img.style.transform = `scale(${scale})`;
-        img.style.opacity = opacity;
-      });
-
-      requestAnimationFrame(animateCarousel);
-    }
-
-    animateCarousel();
-  });
+  animateCarousel();
 }
 
 // =====================
