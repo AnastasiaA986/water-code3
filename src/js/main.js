@@ -95,19 +95,7 @@ function showOverlay(title, text, btn) {
 // =====================
 
 document.querySelectorAll(".ripple-btn").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation(); // чтобы клик по кнопке не считался кликом "вне overlay"
-
-    const overlay = document.getElementById("info-overlay");
-
-    // Если overlay уже открыт → закрываем
-    if (overlay.classList.contains("visible")) {
-      overlay.classList.remove("visible");
-      activeBtn = null;
-      return;
-    }
-
-    // Иначе открываем с нужным текстом
+  btn.addEventListener("mouseenter", () => {
     switch (btn.id) {
       case "btn-1a":
         showOverlay(
@@ -238,22 +226,20 @@ document.querySelectorAll(".ripple-btn").forEach((btn) => {
         break;
     }
   });
+
+  btn.addEventListener("mouseleave", (e) => {
+    // если курсор ушёл на overlay — не скрываем
+    if (overlay.contains(e.relatedTarget)) return;
+
+    overlay.classList.remove("visible");
+    activeBtn = null;
+  });
+});
+overlay.addEventListener("mouseenter", () => {
+  overlay.classList.add("visible");
 });
 
-// =====================
-// ЗАКРЫТИЕ OVERLAY ПРИ КЛИКЕ ВНЕ ОКНА
-// =====================
-
-document.addEventListener("click", (e) => {
-  const overlay = document.getElementById("info-overlay");
-
-  // если overlay закрыт — ничего не делаем
-  if (!overlay.classList.contains("visible")) return;
-
-  // если клик внутри overlay — не закрываем
-  if (overlay.contains(e.target)) return;
-
-  // иначе закрываем
+overlay.addEventListener("mouseleave", () => {
   overlay.classList.remove("visible");
   activeBtn = null;
 });
