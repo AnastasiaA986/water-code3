@@ -119,120 +119,120 @@ document.querySelectorAll(".ripple-btn").forEach((btn) => {
 
       case "btn-1b":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Structure respirante",
+          "Une base souple qui accompagne chaque mouvement comme un pétale vivant",
           btn,
         );
         break;
 
       case "btn-2a":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Spirales cinétiques",
+          "Des rubans polymères légers qui tournent autour du corps comme des flux d’air solidifiés",
           btn,
         );
         break;
 
       case "btn-2b":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Équilibre suspendu",
+          "Chaque courbe garde sa tension grâce à une structure interne invisible",
           btn,
         );
         break;
 
       case "btn-3a":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Expansion aquatique",
+          "Des éléments souples qui s’étendent comme des branches sous‑marines, réagissant au mouvement de l’air",
           btn,
         );
         break;
 
       case "btn-3b":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Surface vivante",
+          "Un tissu irisé qui ondule doucement, imitant les reflets de l’eau sur la peau",
           btn,
         );
         break;
 
       case "btn-4a":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Structure cristalline",
+          "Des panneaux rigides et translucides qui s’élèvent comme des éclats de lumière figés dans le mouvement",
           btn,
         );
         break;
 
       case "btn-4b":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Structure cristalline",
+          "Des panneaux rigides et translucides qui s’élèvent comme des éclats de lumière figés dans le mouvement",
           btn,
         );
         break;
 
       case "btn-5a":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Floraison minérale",
+          "Des pétales rigides inspirés des cristaux, sculptés pour amplifier la puissance du corps",
           btn,
         );
         break;
 
       case "btn-5b":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Éclat solaire",
+          "La matière dorée capte la lumière et la renvoie en reflets chauds, comme une armure lumineuse",
           btn,
         );
         break;
 
       case "btn-6a":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Spirales organiques",
+          "Des volumes souples qui s’enroulent autour du corps, évoquant le souffle et la croissance naturelle",
           btn,
         );
         break;
 
       case "btn-6b":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Texture lumineuse",
+          "Un tissu doré qui capte la lumière et la diffuse comme une brume chaude sur la peau",
           btn,
         );
         break;
 
       case "btn-7a":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Architecture organique",
+          "Des formes angulaires qui s’ouvrent et se referment comme des pétales mécaniques autour du corps",
           btn,
         );
         break;
 
       case "btn-7b":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Structure dynamique",
+          "Un design sculpté qui équilibre force et légèreté, évoquant la tension d’un mouvement figé",
           btn,
         );
         break;
 
       case "btn-8a":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Cristaux fluides",
+          "Un tissage translucide inspiré des structures de glace — souple, lumineux, presque vivant sous la lumière",
           btn,
         );
         break;
 
       case "btn-8b":
         showOverlay(
-          "Pétales polymères adaptatifs",
-          "Des panneaux ultrafins, souples à la base et plus rigides sur les bords, pour garder une forme précise",
+          "Réseau cristallin",
+          "Des lignes entrelacées qui suivent le corps comme des veines de lumière en mouvement",
           btn,
         );
         break;
