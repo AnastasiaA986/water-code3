@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "manifold-cf", Arial, sans-serif;
+  font-family: "manifold-cf", sans-serif;
 
   overflow-y: auto; /* разрешаем вертикальный скролл */
   overflow-x: hidden;
@@ -135,7 +135,7 @@ body.loading #loader-overlay {
 
 h1 {
   color: #fff;
-  font-family: "CoFo Raffine";
+  font-family: cofo-raffine, sans-serif;
   text-align: center;
   font-size: 9.2vw;
   font-style: normal;
@@ -149,7 +149,7 @@ h1 {
 h4 {
   color: #fff;
   text-align: center;
-  font-family: "Manifold CF";
+  font-family: "manifold-cf", sans-serif;
   font-size: 1.7vw;
   font-style: normal;
   font-weight: 400;
@@ -189,7 +189,7 @@ h4 {
   position: fixed;
   color: #fff;
   text-align: center;
-  font-family: "Manifold CF";
+  font-family: "manifold-cf", sans-serif;
   font-size: 20px;
   font-style: normal;
   font-weight: 300;
@@ -210,7 +210,7 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Manifold CF";
+  font-family: "manifold-cf", sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-transform: uppercase;
@@ -267,7 +267,7 @@ h4 {
 h5 {
   margin: 0;
   color: #fff;
-  font-family: "CoFo Raffine";
+  font-family: cofo-raffine, sans-serif;
   font-size: 30px;
   font-weight: 500;
   letter-spacing: 3px;
@@ -276,7 +276,7 @@ h5 {
 
 .logo-sous-titre {
   color: #fff;
-  font-family: "Manifold CF";
+  font-family: "manifold-cf", sans-serif;
   font-size: 11px;
   font-weight: 400;
   letter-spacing: 3.74px;
@@ -481,7 +481,7 @@ h2 {
     "ss07" on,
     "ss09" on,
     "ss10" on;
-  font-family: "CoFo Raffine";
+  font-family: cofo-raffine, sans-serif;
   font-size: 90px;
   font-style: normal;
   font-weight: 500;
@@ -511,7 +511,7 @@ h3 {
     "ss07" on,
     "ss09" on,
     "ss10" on;
-  font-family: "CoFo Raffine";
+  font-family: cofo-raffine, sans-serif;
   font-size: 48px;
   font-style: normal;
   font-weight: 400;
@@ -529,7 +529,7 @@ p {
     "dlig" on,
     "salt" on;
 
-  font-family: "Manifold CF";
+  font-family: "manifold-cf", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 300;
@@ -592,7 +592,7 @@ p {
     "numr" on,
     "dlig" on,
     "salt" on;
-  font-family: "Manifold CF";
+  font-family: "manifold-cf", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 300;
@@ -680,7 +680,7 @@ p {
 
 #overlay-title {
   color: #012240;
-  font-family: "Manifold CF";
+  font-family: "manifold-cf", sans-serif;
   font-size: 20px;
   text-transform: uppercase;
   line-height: 125%;
@@ -693,7 +693,7 @@ p {
 #overlay-text {
   margin: auto;
   color: #012240;
-  font-family: "Manifold CF";
+  font-family: "manifold-cf", sans-serif;
   text-align: center;
   font-size: 14px;
   font-style: normal;
